@@ -64,9 +64,9 @@ textarea {
 
 #emailDisplay {
     position: absolute;
-    padding: 2px;
-    right: 0;
-    color: var(--grid-color);
+    top: 2px;
+    right: 25px;
+    opacity: 0.6;
 }
 
 /* controls */

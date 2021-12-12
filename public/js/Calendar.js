@@ -30,6 +30,7 @@ export class Calendar {
         $("#addButton").click(() => this.addNewEvent());
         $("#trashButton").click(() => this.trash());
         $("#cancelButton").click(() => this.closeModal());
+        $("#logoutButton").click(() => this.logout());
         $(".color").click(this.changeColor);
     }
 
@@ -285,5 +286,17 @@ export class Calendar {
 
     showEmail() {
         $("#emailDisplay").text(this.user.email);
+    }
+
+    logout() {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                window.location.href = "./index.html";
+            })
+            .catch((error) => {
+                window.alert(error.message);
+            });
     }
 }
