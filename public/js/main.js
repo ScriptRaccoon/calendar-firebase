@@ -1,5 +1,4 @@
 import { Calendar } from "./Calendar.js";
-
 import { initializeFirebase } from "./firebase.js";
 
 initializeFirebase();

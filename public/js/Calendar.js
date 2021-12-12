@@ -1,9 +1,11 @@
 import { dateString, getDayIndex, addDays } from "./helper.js";
 import { Event, MODE } from "./Event.js";
+import { db } from "./firebase.js";
 
 export class Calendar {
     constructor(user) {
         this.user = user;
+        this.docRef = db.collection("calendars").doc(this.user.uid);
         this.mode = MODE.VIEW;
         this.events = {};
         this.weekOffset = 0;
@@ -20,8 +22,8 @@ export class Calendar {
         this.setupDays();
         this.calculateCurrentWeek();
         this.showWeek();
-        this.loadEvents();
         this.setupControls();
+        this.loadEvents();
     }
 
     setupControls() {
@@ -227,13 +229,28 @@ export class Calendar {
     }
 
     saveEvents() {
-        localStorage.setItem("events", JSON.stringify(this.events));
+        try {
+            this.docRef.set({
+                data: JSON.stringify(this.events),
+            });
+        } catch (error) {
+            window.alert(error.message);
+        }
     }
 
-    loadEvents() {
+    async loadEvents() {
         $(".event").remove();
         if (!this.eventsLoaded) {
-            this.events = JSON.parse(localStorage.getItem("events"));
+            let firebaseData;
+            try {
+                firebaseData = (await this.docRef.get()).data();
+            } catch (error) {
+                window.alert(error.message);
+                return;
+            }
+            this.events = firebaseData
+                ? JSON.parse(firebaseData.data)
+                : {};
             if (this.events) {
                 for (const date of Object.keys(this.events)) {
                     for (const id of Object.keys(this.events[date])) {
