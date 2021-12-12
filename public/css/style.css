@@ -323,3 +323,54 @@ textarea {
         display: none;
     }
 }
+
+/* auth Form */
+
+.authForm {
+    margin-top: 40px;
+    text-align: center;
+}
+
+.authForm h2 {
+    font-weight: 400;
+    font-size: 28px;
+}
+
+.authForm a {
+    text-decoration: none;
+    color: var(--color-blue);
+}
+
+.authForm a:hover {
+    text-decoration: underline;
+}
+
+.authForm > div {
+    margin: 15px 0px;
+}
+
+.authForm label {
+    display: block;
+}
+
+.authForm input[type="password"],
+.authForm input[type="email"] {
+    border: 1px solid #555;
+    padding: 5px;
+    width: 300px;
+    border-radius: 4px;
+}
+
+.authForm input[type="password"]:focus,
+.authForm input[type="email"]:focus {
+    background: #eee;
+}
+
+.authForm .question {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.authError {
+    color: var(--color-red);
+}
