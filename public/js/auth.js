@@ -9,8 +9,16 @@ $("#loginForm").on("submit", (e) => {
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then(() => {
-            window.location.href = `./calendar.html`;
+        .then((userCredential) => {
+            const user = userCredential.user;
+            if (user.emailVerified) {
+                window.location.href = `./calendar.html`;
+            } else {
+                $(".authError").text(
+                    "You need to verify your e-mail address first. Please check your inbox."
+                );
+                user.sendEmailVerification();
+            }
         })
         .catch((error) => {
             $(".authError").text(error.message);
@@ -25,7 +33,12 @@ $("#registerForm").on("submit", (e) => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
-            window.location.href = `./calendar.html`;
+            $(".success").text(
+                "Registration was successful! You will be redirected to the login page."
+            );
+            setTimeout(() => {
+                window.location.href = `./login.html`;
+            }, 3000);
         })
         .catch((error) => {
             $(".authError").text(error.message);
