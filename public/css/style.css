@@ -335,9 +335,18 @@ textarea {
 
 /* auth Form */
 
+.formContainer {
+    padding: 0px 10px;
+}
+
 .authForm {
-    margin-top: 40px;
+    max-width: 350px;
+    margin: 40px auto;
+    padding: 30px 20px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 10px #0004;
     text-align: center;
+    display: none;
 }
 
 .authForm h2 {
@@ -355,7 +364,7 @@ textarea {
 }
 
 .authForm > div {
-    margin: 15px 0px;
+    margin: 25px 0px;
 }
 
 .authForm label {
@@ -365,8 +374,9 @@ textarea {
 .authForm input[type="password"],
 .authForm input[type="email"] {
     border: 1px solid #555;
+    margin: 2px 0px;
     padding: 5px;
-    width: 300px;
+    width: 100%;
     border-radius: 4px;
 }
 

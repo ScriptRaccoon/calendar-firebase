@@ -2,6 +2,14 @@ import { initializeFirebase } from "./firebase.js";
 
 initializeFirebase();
 
+$(".authForm").fadeIn();
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user && user.emailVerified) {
+        window.location.href = `./calendar.html`;
+    }
+});
+
 $("#loginForm").on("submit", (e) => {
     e.preventDefault();
     const email = $("#emailInput").val();
