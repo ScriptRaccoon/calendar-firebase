@@ -36,7 +36,7 @@ textarea {
 
 .header {
     text-align: center;
-    padding: 20px 10px;
+    padding: 30px 10px;
     position: relative;
     display: flex;
     align-items: center;
@@ -58,6 +58,15 @@ textarea {
 .header i:hover {
     color: var(--font-color);
     border-color: var(--font-color);
+}
+
+/* email display */
+
+#emailDisplay {
+    position: absolute;
+    padding: 2px;
+    right: 0;
+    color: var(--grid-color);
 }
 
 /* controls */

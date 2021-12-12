@@ -2,7 +2,8 @@ import { dateString, getDayIndex, addDays } from "./helper.js";
 import { Event, MODE } from "./Event.js";
 
 export class Calendar {
-    constructor() {
+    constructor(user) {
+        this.user = user;
         this.mode = MODE.VIEW;
         this.events = {};
         this.weekOffset = 0;
@@ -14,6 +15,7 @@ export class Calendar {
     }
 
     setup() {
+        this.showEmail();
         this.setupTimes();
         this.setupDays();
         this.calculateCurrentWeek();
@@ -49,7 +51,9 @@ export class Calendar {
         $(".day").each(function () {
             const dayIndex = parseInt($(this).attr("data-dayIndex"));
             const name = $(this).attr("data-name");
-            const header = $("<div></div>").addClass("columnHeader").text(name);
+            const header = $("<div></div>")
+                .addClass("columnHeader")
+                .text(name);
             const slots = $("<div></div>").addClass("slots");
             $("<div></div>").addClass("dayDisplay").appendTo(header);
             for (let hour = 0; hour < 24; hour++) {
@@ -90,7 +94,9 @@ export class Calendar {
         $("#weekStartDisplay").text(
             this.weekStart.toLocaleDateString(undefined, options)
         );
-        $("#weekEndDisplay").text(this.weekEnd.toLocaleDateString(undefined, options));
+        $("#weekEndDisplay").text(
+            this.weekEnd.toLocaleDateString(undefined, options)
+        );
 
         for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
             const date = addDays(this.weekStart, dayIndex);
@@ -98,7 +104,9 @@ export class Calendar {
                 month: "2-digit",
                 day: "2-digit",
             });
-            $(`.day[data-dayIndex=${dayIndex}] .dayDisplay`).text(display);
+            $(`.day[data-dayIndex=${dayIndex}] .dayDisplay`).text(
+                display
+            );
         }
         if (this.weekOffset == 0) {
             this.showCurrentDay();
@@ -153,7 +161,9 @@ export class Calendar {
 
     openModal(event) {
         $("#modalTitle").text(
-            this.mode == MODE.UPDATE ? "Update your event" : "Create a new event"
+            this.mode == MODE.UPDATE
+                ? "Update your event"
+                : "Create a new event"
         );
         $("#eventTitle").val(event.title);
         $("#eventDate").val(event.date);
@@ -226,7 +236,9 @@ export class Calendar {
             if (this.events) {
                 for (const date of Object.keys(this.events)) {
                     for (const id of Object.keys(this.events[date])) {
-                        const event = new Event(this.events[date][id]);
+                        const event = new Event(
+                            this.events[date][id]
+                        );
                         this.events[date][id] = event;
                     }
                 }
@@ -235,9 +247,13 @@ export class Calendar {
         }
         if (this.events) {
             for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-                const date = dateString(addDays(this.weekStart, dayIndex));
+                const date = dateString(
+                    addDays(this.weekStart, dayIndex)
+                );
                 if (this.events[date]) {
-                    for (const event of Object.values(this.events[date])) {
+                    for (const event of Object.values(
+                        this.events[date]
+                    )) {
                         event.showIn(this);
                     }
                 }
@@ -265,5 +281,9 @@ export class Calendar {
                 this.readyToTrash = false;
             }, 60 * 1000);
         }
+    }
+
+    showEmail() {
+        $("#emailDisplay").text(this.user.email);
     }
 }
