@@ -1,19 +1,22 @@
 import { dateString, getDayIndex, addDays } from "./helper.js";
-import { Event, MODE } from "./Event.js";
 import { db } from "./firebase.js";
+
+const MODE = {
+    VIEW: 1,
+    UPDATE: 2,
+    CREATE: 3,
+};
 
 export class Calendar {
     constructor(user) {
         this.user = user;
-        this.docRef = db.collection("calendars").doc(this.user.uid);
+        this.collection = db.collection(this.user.uid);
         this.mode = MODE.VIEW;
-        this.events = {};
         this.weekOffset = 0;
-        this.readyToTrash = false;
         this.slotHeight = 30;
         this.weekStart = null;
         this.weekEnd = null;
-        this.eventsLoaded = false;
+        this.snapShot = null;
     }
 
     setup() {
@@ -146,14 +149,14 @@ export class Calendar {
                 : hour.toString().padStart(2, "0") + ":59";
 
         const date = dateString(addDays(this.weekStart, dayIndex));
-        const event = new Event({
+        const event = {
             start,
             end,
             date,
             title: "",
             description: "",
             color: "red",
-        });
+        };
         this.openModal(event);
     }
 
@@ -180,11 +183,11 @@ export class Calendar {
             $("#deleteButton")
                 .show()
                 .off("click")
-                .click(() => event.deleteIn(this));
+                .click(() => this.delete(event));
             $("#copyButton")
                 .show()
                 .off("click")
-                .click(() => event.copyIn(this));
+                .click(() => this.copy(event));
         } else if (this.mode == MODE.CREATE) {
             $("#submitButton").val("Create");
             $("#deleteButton, #copyButton").hide();
@@ -200,10 +203,197 @@ export class Calendar {
             });
     }
 
-    submitModal(event) {
-        if (event.isValidIn(this)) {
-            event.updateIn(this);
+    async submitModal(event) {
+        const isValid = await this.validate(event);
+        if (!isValid) return;
+        if (this.mode == MODE.CREATE) {
+            await this.create(event);
             this.closeModal();
+            this.show(event);
+        } else if (this.mode == MODE.UPDATE) {
+            await this.update(event);
+            this.closeModal();
+            this.show(event);
+        }
+    }
+
+    async delete(event) {
+        try {
+            await this.collection.doc(event.id).delete();
+        } catch (error) {
+            window.alert(error.message);
+        }
+        $(`#${event.id}`).remove();
+        this.closeModal();
+    }
+
+    copy(event) {
+        if (this.mode != MODE.UPDATE) return;
+        this.closeModal();
+        this.mode = MODE.CREATE;
+        const copy = {
+            title: "Copy of " + event.title,
+            start: event.start,
+            end: event.end,
+            date: event.date,
+            description: event.description,
+            color: event.color,
+        };
+        this.openModal(copy);
+    }
+
+    click(event) {
+        if (this.mode != MODE.VIEW) return;
+        this.mode = MODE.UPDATE;
+        this.openModal(event);
+    }
+
+    show(event) {
+        if (
+            event.date < dateString(this.weekStart) ||
+            event.date > dateString(this.weekEnd)
+        ) {
+            $(`#${event.id}`).remove();
+            return;
+        }
+
+        let eventSlot;
+
+        if ($(`#${event.id}`).length) {
+            eventSlot = $(`#${event.id}`);
+        } else {
+            eventSlot = $("<div></div>")
+                .addClass("event")
+                .attr("id", event.id)
+                .click(() => this.click(event));
+        }
+
+        const h = this.slotHeight;
+
+        const startHour = parseInt(event.start.substring(0, 2));
+        const endHour = parseInt(event.end.substring(0, 2));
+        const startMinutes = parseInt(event.start.substring(3, 5));
+        const endMinutes = parseInt(event.end.substring(3, 5));
+        const dayIndex = getDayIndex(new Date(event.date));
+
+        const duration =
+            (new Date(`${event.date}T${event.end}`).getTime() -
+                new Date(`${event.date}T${event.start}`).getTime()) /
+            (1000 * 60);
+
+        eventSlot
+            .text(event.title)
+            .css(
+                "top",
+                (startHour + startMinutes / 60) * h + 2 + "px"
+            )
+            .css(
+                "bottom",
+                24 * h - (endHour + endMinutes / 60) * h + 1 + "px"
+            )
+            .css("backgroundColor", `var(--color-${event.color})`)
+            .appendTo(`.day[data-dayIndex=${dayIndex}] .slots`);
+
+        if (duration < 45) {
+            eventSlot
+                .removeClass("shortEvent")
+                .addClass("veryShortEvent");
+        } else if (duration < 59) {
+            eventSlot
+                .removeClass("veryShortEvent")
+                .addClass("shortEvent");
+        } else {
+            eventSlot
+                .removeClass("shortEvent")
+                .removeClass("veryShortEvent");
+        }
+    }
+
+    async validate(event) {
+        const newStart = $("#eventStart").val();
+        const newEnd = $("#eventEnd").val();
+        const newDate = $("#eventDate").val();
+        const changedTime =
+            newStart != event.start ||
+            newEnd != event.end ||
+            newDate != event.date;
+
+        if (changedTime) {
+            const eventsOnNewDate = await this.collection
+                .where("date", "==", newDate)
+                .get();
+
+            let collidingEvent = null;
+
+            eventsOnNewDate.forEach((doc) => {
+                const otherId = doc.id;
+                const other = doc.data();
+                if (
+                    otherId != event.id &&
+                    other.end > newStart &&
+                    other.start < newEnd
+                ) {
+                    collidingEvent = other;
+                }
+            });
+            if (collidingEvent) {
+                $("#errors").text(
+                    `This collides with the event '${collidingEvent.title}'
+                         (${collidingEvent.start} - ${collidingEvent.end}).`
+                );
+                return false;
+            }
+        }
+
+        const duration =
+            (new Date(`${newDate}T${newEnd}`).getTime() -
+                new Date(`${newDate}T${newStart}`).getTime()) /
+            (1000 * 60);
+
+        if (duration < 0) {
+            $("#errors").text("The start cannot be after the end.");
+            return false;
+        } else if (duration < 30) {
+            $("#errors").text(
+                "Events should be at least 30 minutes."
+            );
+            return false;
+        }
+        return true;
+    }
+
+    read(event) {
+        event.title = $("#eventTitle").val();
+        event.start = $("#eventStart").val();
+        event.end = $("#eventEnd").val();
+        event.date = $("#eventDate").val();
+        event.description = $("#eventDescription").val();
+        event.color = $(".color.active").attr("data-color");
+    }
+
+    async create(event) {
+        this.read(event);
+        try {
+            const eventRef = await this.collection.add(event);
+            event.id = eventRef.id;
+        } catch (error) {
+            window.alert(error.message);
+        }
+    }
+
+    async update(event) {
+        this.read(event);
+        try {
+            await this.collection.doc(event.id).update({
+                title: event.title,
+                start: event.start,
+                end: event.end,
+                date: event.date,
+                description: event.description,
+                color: event.color,
+            });
+        } catch (error) {
+            window.alert(error.message);
         }
     }
 
@@ -217,87 +407,52 @@ export class Calendar {
     addNewEvent() {
         if (this.mode != MODE.VIEW) return;
         this.mode = MODE.CREATE;
-        const event = new Event({
+        const event = {
             start: "12:00",
             end: "13:00",
             date: dateString(this.weekStart),
             title: "",
             description: "",
             color: "red",
-        });
+        };
         this.openModal(event);
-    }
-
-    saveEvents() {
-        try {
-            this.docRef.set({
-                data: JSON.stringify(this.events),
-            });
-        } catch (error) {
-            window.alert(error.message);
-        }
     }
 
     async loadEvents() {
         $(".event").remove();
-        if (!this.eventsLoaded) {
-            let firebaseData;
-            try {
-                firebaseData = (await this.docRef.get()).data();
-            } catch (error) {
-                window.alert(error.message);
-                return;
-            }
-            this.events = firebaseData
-                ? JSON.parse(firebaseData.data)
-                : {};
-            if (this.events) {
-                for (const date of Object.keys(this.events)) {
-                    for (const id of Object.keys(this.events[date])) {
-                        const event = new Event(
-                            this.events[date][id]
-                        );
-                        this.events[date][id] = event;
-                    }
-                }
-            }
-            this.eventsLoaded = true;
+        try {
+            this.snapShot = await this.collection
+                .where("date", ">=", dateString(this.weekStart))
+                .where("date", "<=", dateString(this.weekEnd))
+                .get();
+        } catch (error) {
+            window.alert(error.message);
+            return;
         }
-        if (this.events) {
-            for (let dayIndex = 0; dayIndex < 7; dayIndex++) {
-                const date = dateString(
-                    addDays(this.weekStart, dayIndex)
-                );
-                if (this.events[date]) {
-                    for (const event of Object.values(
-                        this.events[date]
-                    )) {
-                        event.showIn(this);
-                    }
-                }
-            }
-        } else {
-            this.events = {};
-        }
+        this.snapShot.forEach((doc) => {
+            const event = doc.data();
+            event.id = doc.id;
+            this.show(event);
+        });
     }
 
-    trash() {
+    async trash() {
         if (this.mode != MODE.VIEW) return;
-        if (this.readyToTrash) {
-            this.readyToTrash = false;
-            this.events = {};
-            this.saveEvents();
-            $(".event").remove();
-        } else {
-            this.readyToTrash = true;
-            window.alert(
-                "This will delete all the events in your calendar. " +
-                    "This cannot be undone. If you are sure, click " +
-                    "the trash can again in the next minute."
-            );
-            setTimeout(() => {
-                this.readyToTrash = false;
-            }, 60 * 1000);
+        const confirmed = window.confirm(
+            "This will delete all the events in your calendar!\n" +
+                "This cannot be undone. Are you sure?"
+        );
+        if (confirmed) {
+            this.snapShot = null;
+            try {
+                const snapShot = await this.collection.get();
+                snapShot.forEach((doc) => {
+                    this.collection.doc(doc.id).delete();
+                    $(`#${doc.id}`).remove();
+                });
+            } catch (error) {
+                window.alert(error.message);
+            }
         }
     }
 

@@ -13,7 +13,6 @@ $("#loginForm").on("submit", (e) => {
             window.location.href = `./calendar.html`;
         })
         .catch((error) => {
-            console.log(error);
             $(".authError").text(error.message);
         });
 });
@@ -25,19 +24,10 @@ $("#registerForm").on("submit", (e) => {
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // const user = userCredential.user;
-            // const userId = user.uid;
-            // db.collection(userId)
-            //     .doc("initial")
-            //     .set({ created: true })
-            //     .then(() => {
-            //         window.location.href = `./calendar.html`;
-            //     });
+        .then(() => {
             window.location.href = `./calendar.html`;
         })
         .catch((error) => {
-            console.log(error);
             $(".authError").text(error.message);
         });
 });
