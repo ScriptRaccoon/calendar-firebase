@@ -1,4 +1,4 @@
-import { initializeFirebase, db } from "./firebase.js";
+import { initializeFirebase } from "./firebase.js";
 
 initializeFirebase();
 
@@ -9,7 +9,7 @@ $("#loginForm").on("submit", (e) => {
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
+        .then(() => {
             window.location.href = `./calendar.html`;
         })
         .catch((error) => {

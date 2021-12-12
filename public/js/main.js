@@ -3,13 +3,10 @@ import { initializeFirebase } from "./firebase.js";
 
 initializeFirebase();
 
-let user;
-
-firebase.auth().onAuthStateChanged((firebaseUser) => {
-    if (!firebaseUser || (user && user != firebaseUser)) {
+firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
         window.location.href = "./index.html";
     } else {
-        user = firebaseUser;
         new Calendar(user).setup();
     }
 });
