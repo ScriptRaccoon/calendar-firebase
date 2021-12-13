@@ -1,54 +1,62 @@
 import { initializeFirebase } from "./firebase.js";
 
-initializeFirebase();
+$(() => {
+    initializeFirebase();
+    firebase.auth().onAuthStateChanged(checkUser);
+    $(".changeBtn").on("click", changeForm);
+    $("#loginForm").on("submit", handleLogin);
+    $("#registerForm").on("submit", handleRegister);
+});
 
-$(".authForm").fadeIn();
-
-firebase.auth().onAuthStateChanged((user) => {
+function checkUser(user) {
     if (user && user.emailVerified) {
         window.location.href = `./calendar.html`;
     }
-});
+}
 
-$("#loginForm").on("submit", (e) => {
+function changeForm() {
+    $("#loginForm").fadeToggle("slow");
+    $("#registerForm").fadeToggle("slow");
+}
+
+function handleLogin(e) {
     e.preventDefault();
-    const email = $("#emailInput").val();
-    const password = $("#passwordInput").val();
+    const email = $("#loginEmailInput").val();
+    const password = $("#loginPasswordInput").val();
     firebase
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            if (user.emailVerified) {
+            if (user && user.emailVerified) {
                 window.location.href = `./calendar.html`;
             } else {
-                $(".authError").text(
+                $("#loginForm .authError").text(
                     "You need to verify your e-mail address first. Please check your inbox."
                 );
                 user.sendEmailVerification();
             }
         })
         .catch((error) => {
-            $(".authError").text(error.message);
+            $("#loginForm .authError").text(error.message);
         });
-});
+}
 
-$("#registerForm").on("submit", (e) => {
+function handleRegister(e) {
     e.preventDefault();
-    const email = $("#emailInput").val();
-    const password = $("#passwordInput").val();
+    const email = $("#registerEmailInput").val();
+    const password = $("#registerPasswordInput").val();
     firebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            $(".success").text(
-                "Registration was successful! You will be redirected to the login page."
+        .then((userCredential) => {
+            const user = userCredential.user;
+            user.sendEmailVerification();
+            $("#registerForm .success").text(
+                "Registration was successful! Please check your inbox to verify your e-mail address. Then you can login."
             );
-            setTimeout(() => {
-                window.location.href = `./login.html`;
-            }, 3000);
         })
         .catch((error) => {
-            $(".authError").text(error.message);
+            $("#registerForm .authError").text(error.message);
         });
-});
+}

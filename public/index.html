@@ -4,12 +4,63 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="refresh" content="1; url=./login.html">
     <title>Calendar</title>
+    <link rel="stylesheet" href="./css/style.css">  
 </head>
 <body>
-    <script>
-        window.location.href = "./login.html";
-    </script>
+
+    <main>
+        <header class="header">
+            <h1>Calendar</h1>
+        </header>
+
+        <div class="formContainer">
+
+            <form id="loginForm" class = "authForm">
+                <h2>Login</h2>
+                <div>
+                    <label for="loginEmailInput">E-mail</label>
+                    <input type="email" id="loginEmailInput" required autocomplete="off">
+                </div>
+                <div>
+                    <label for="loginPasswordInput">Password</label>
+                    <input type="password" id="loginPasswordInput" required autocomplete="off">
+                </div>
+                <input id="submitBtn" type="submit" class="button" value="Login">
+                <div class="authError"></div>
+                <div id="question">
+                    Don't have an account? <input type="button" class="changeBtn" value="Register"> instead.
+                </div>
+            </form>
+
+            <form id="registerForm" class="authForm">
+                <h2>Register</h2>
+                <div>
+                    <label for="registerEmailInput">E-mail</label>
+                    <input type="email" id="registerEmailInput" required autocomplete="off">
+                </div>
+                <div>
+                    <label for="registerPasswordInput">Password</label>
+                    <input type="password" id="registerPasswordInput" required autocomplete="off">
+                </div>
+                <input type="submit" class="button" value="Register">
+                <div class="authError"></div>
+                <div class="success"></div>
+                <div class="question">
+                    Don't have an account? <input type='button' class="changeBtn" value="Login"> instead.
+                </div>
+            </form>
+            
+        </div>        
+
+    </main>    
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+   
+    <script src="./js/auth.js" type="module"></script>
+    
 </body>
 </html>
