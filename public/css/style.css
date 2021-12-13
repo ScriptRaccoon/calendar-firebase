@@ -165,11 +165,11 @@ textarea {
 }
 
 .columnHeader .fa-chevron-right {
-    right: 4px;
+    right: 10px;
 }
 
 .columnHeader .fa-chevron-left {
-    left: 4px;
+    left: 10px;
 }
 
 #calendar.singleDay .columnHeader > i {
