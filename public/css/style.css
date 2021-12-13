@@ -130,6 +130,7 @@ textarea {
     padding: 10px 0px;
     height: 60px;
     overflow: hidden;
+    position: relative;
 }
 
 .day .columnHeader {
@@ -143,6 +144,31 @@ textarea {
 .dayDisplay {
     font-size: 15px;
     color: var(--time-color);
+}
+
+.columnHeader > i {
+    position: absolute;
+    top: calc(50% - 6px);
+    font-size: 14px;
+    color: var(--time-color);
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.columnHeader > i:hover {
+    color: var(--font-color);
+}
+
+.columnHeader .fa-chevron-right {
+    right: 4px;
+}
+
+.columnHeader .fa-chevron-left {
+    left: 4px;
+}
+
+#calendar.singleDay .columnHeader > i {
+    visibility: visible;
 }
 
 /* single day display */

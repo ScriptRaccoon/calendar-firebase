@@ -63,6 +63,12 @@ export class Calendar {
                 .text(name);
             const slots = $("<div></div>").addClass("slots");
             $("<div></div>").addClass("dayDisplay").appendTo(header);
+            const arrowRight = $(
+                `<i class="fas fa-chevron-right"></i>`
+            ).appendTo(header);
+            const arrowLeft = $(
+                `<i class="fas fa-chevron-left"></i>`
+            ).appendTo(header);
             for (let hour = 0; hour < 24; hour++) {
                 $("<div></div>")
                     .attr("data-hour", hour)
