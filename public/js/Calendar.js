@@ -209,21 +209,19 @@ export class Calendar {
         if (!isValid) return;
         if (this.mode == MODE.CREATE) {
             await this.create(event);
-            this.closeModal();
         } else if (this.mode == MODE.UPDATE) {
             await this.update(event);
-            this.closeModal();
         }
     }
 
     async delete(event) {
         try {
             await this.collection.doc(event.id).delete();
+            $(`#${event.id}`).remove();
+            this.closeModal();
         } catch (error) {
-            window.alert(error.message);
+            $("#errors").text(error.message);
         }
-        $(`#${event.id}`).remove();
-        this.closeModal();
     }
 
     copy(event) {
@@ -375,8 +373,9 @@ export class Calendar {
         try {
             const eventRef = await this.collection.add(event);
             event.id = eventRef.id;
+            this.closeModal();
         } catch (error) {
-            window.alert(error.message);
+            $("#errors").text(error.message);
         }
     }
 
@@ -391,8 +390,9 @@ export class Calendar {
                 description: event.description,
                 color: event.color,
             });
+            this.closeModal();
         } catch (error) {
-            window.alert(error.message);
+            $("#errors").text(error.message);
         }
     }
 
@@ -418,11 +418,11 @@ export class Calendar {
     }
 
     listenForUpdates() {
-        $(".event").remove();
         this.listener = this.collection
             .where("date", ">=", dateString(this.weekStart))
             .where("date", "<=", dateString(this.weekEnd))
             .onSnapshot((snap) => {
+                $(".event").remove();
                 snap.forEach((doc) => {
                     const event = doc.data();
                     event.id = doc.id;
