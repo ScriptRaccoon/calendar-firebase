@@ -61,6 +61,11 @@ textarea {
     border-color: var(--font-color);
 }
 
+.header .subtitle {
+    font-size: 18px;
+    opacity: 0.8;
+}
+
 /* email display */
 
 #emailDisplay {
@@ -338,7 +343,6 @@ textarea {
 
 .formContainer {
     max-width: 350px;
-    min-height: 100vh;
     margin: 40px auto;
     padding: 0px 10px;
     position: relative;
