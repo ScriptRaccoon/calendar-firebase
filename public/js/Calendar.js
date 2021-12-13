@@ -23,7 +23,7 @@ export class Calendar {
         this.weekStart = null;
         this.weekEnd = null;
         this.listener = null;
-        this.dayOffset = 0;
+        this.currentDayIndex = getDayIndex(new Date());
     }
 
     setup() {
@@ -65,10 +65,12 @@ export class Calendar {
             $("<div></div>").addClass("dayDisplay").appendTo(header);
             const arrowRight = $(
                 `<i class="fas fa-chevron-right"></i>`
-            ).appendTo(header);
-            const arrowLeft = $(
-                `<i class="fas fa-chevron-left"></i>`
-            ).appendTo(header);
+            )
+                .click(() => cal.changeDay(+1))
+                .appendTo(header);
+            const arrowLeft = $(`<i class="fas fa-chevron-left"></i>`)
+                .click(() => cal.changeDay(-1))
+                .appendTo(header);
             for (let hour = 0; hour < 24; hour++) {
                 $("<div></div>")
                     .attr("data-hour", hour)
@@ -82,6 +84,21 @@ export class Calendar {
             }
             $(this).append(header).append(slots);
         });
+    }
+
+    changeDay(direction) {
+        $(".day").removeClass("current");
+        this.currentDayIndex += direction;
+        if (this.currentDayIndex < 0) {
+            this.changeWeek(-1);
+            this.currentDayIndex = 6;
+        } else if (this.currentDayIndex >= 7) {
+            this.changeWeek(+1);
+            this.currentDayIndex = 0;
+        }
+        $(`.day[data-dayIndex="${this.currentDayIndex}"`).addClass(
+            "current"
+        );
     }
 
     calculateCurrentWeek() {
@@ -151,10 +168,9 @@ export class Calendar {
         if (this.display == DISPLAY.WEEK) {
             this.display = DISPLAY.DAY;
             $("#displayButton").attr("title", "Change to week view");
-            const currentIndex = getDayIndex(new Date());
-            $(`.day[data-dayIndex="${currentIndex}"`).addClass(
-                "current"
-            );
+            $(
+                `.day[data-dayIndex="${this.currentDayIndex}"`
+            ).addClass("current");
         } else {
             this.display = DISPLAY.WEEK;
             $("#displayButton").attr("title", "Change to day view");

@@ -146,6 +146,10 @@ textarea {
     color: var(--time-color);
 }
 
+#calendar.singleDay .dayDisplay {
+    color: var(--font-color);
+}
+
 .columnHeader > i {
     position: absolute;
     top: calc(50% - 6px);
