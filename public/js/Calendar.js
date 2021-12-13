@@ -38,9 +38,7 @@ export class Calendar {
     }
 
     detectDisplay() {
-        console.log("detecting...");
         if (window.innerWidth < 900) {
-            console.log("small!");
             this.switchToDayDisplay();
         }
     }
