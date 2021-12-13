@@ -27,6 +27,7 @@ export class Calendar {
     }
 
     setup() {
+        this.detectDisplay();
         this.showEmail();
         this.setupTimes();
         this.setupDays();
@@ -34,6 +35,14 @@ export class Calendar {
         this.showWeek();
         this.setupControls();
         this.listenForUpdates();
+    }
+
+    detectDisplay() {
+        console.log("detecting...");
+        if (window.innerWidth < 900) {
+            console.log("small!");
+            this.switchToDayDisplay();
+        }
     }
 
     showEmail() {
@@ -166,16 +175,33 @@ export class Calendar {
             .toggleClass("fa-calendar-week");
         $("#calendar").toggleClass("singleDay");
         if (this.display == DISPLAY.WEEK) {
-            this.display = DISPLAY.DAY;
-            $("#displayButton").attr("title", "Change to week view");
-            $(
-                `.day[data-dayIndex="${this.currentDayIndex}"`
-            ).addClass("current");
+            this.switchToDayDisplay();
         } else {
-            this.display = DISPLAY.WEEK;
-            $("#displayButton").attr("title", "Change to day view");
-            $(".day").removeClass("current");
+            this.switchToWeekDisplay();
         }
+    }
+
+    switchToDayDisplay() {
+        this.display = DISPLAY.DAY;
+        $("#calendar").addClass("singleDay");
+        $("#displayButton")
+            .removeClass("fa-calendar-week")
+            .addClass("fa-calendar-day");
+        $("#displayButton").attr("title", "Change to week view");
+        $(`.day[data-dayIndex="${this.currentDayIndex}"`).addClass(
+            "current"
+        );
+    }
+
+    switchToWeekDisplay() {
+        this.display = DISPLAY.WEEK;
+        $("#calendar").removeClass("singleDay");
+        $("#displayButton")
+            .removeClass("fa-calendar-day")
+            .addClass("fa-calendar-week");
+
+        $("#displayButton").attr("title", "Change to day view");
+        $(".day").removeClass("current");
     }
 
     changeWeek(number) {
