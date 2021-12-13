@@ -143,6 +143,17 @@ textarea {
     color: var(--time-color);
 }
 
+/* single day display */
+
+#calendar.singleDay .day {
+    position: absolute;
+    padding-left: 100px;
+}
+
+#calendar.singleDay .day:not(.current) {
+    visibility: hidden;
+}
+
 /* slots */
 
 .slots {

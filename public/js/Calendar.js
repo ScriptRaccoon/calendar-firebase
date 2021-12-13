@@ -141,12 +141,18 @@ export class Calendar {
         $("#displayButton")
             .toggleClass("fa-calendar-day")
             .toggleClass("fa-calendar-week");
+        $("#calendar").toggleClass("singleDay");
         if (this.display == DISPLAY.WEEK) {
             this.display = DISPLAY.DAY;
             $("#displayButton").attr("title", "Change to week view");
+            const currentIndex = getDayIndex(new Date());
+            $(`.day[data-dayIndex="${currentIndex}"`).addClass(
+                "current"
+            );
         } else {
             this.display = DISPLAY.WEEK;
             $("#displayButton").attr("title", "Change to day view");
+            $(".day").removeClass("current");
         }
     }
 
