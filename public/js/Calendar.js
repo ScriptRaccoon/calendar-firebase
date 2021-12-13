@@ -7,16 +7,23 @@ const MODE = {
     CREATE: 3,
 };
 
+const DISPLAY = {
+    DAY: 1,
+    WEEK: 2,
+};
+
 export class Calendar {
     constructor(user) {
         this.user = user;
         this.collection = db.collection(this.user.uid);
         this.mode = MODE.VIEW;
+        this.display = DISPLAY.WEEK;
         this.weekOffset = 0;
         this.slotHeight = 30;
         this.weekStart = null;
         this.weekEnd = null;
         this.listener = null;
+        this.dayOffset = 0;
     }
 
     setup() {
@@ -113,8 +120,9 @@ export class Calendar {
         $("#addButton").click(() => this.addNewEvent());
         $("#trashButton").click(() => this.trash());
         $("#cancelButton").click(() => this.closeModal());
-        $("#logoutButton").click(() => this.logout());
         $(".color").click(this.changeColor);
+        $("#logoutButton").click(() => this.logout());
+        $("#displayButton").click(() => this.toggleDisplay());
     }
 
     logout() {
@@ -127,6 +135,19 @@ export class Calendar {
             .catch((error) => {
                 window.alert(error.message);
             });
+    }
+
+    toggleDisplay() {
+        $("#displayButton")
+            .toggleClass("fa-calendar-day")
+            .toggleClass("fa-calendar-week");
+        if (this.display == DISPLAY.WEEK) {
+            this.display = DISPLAY.DAY;
+            $("#displayButton").attr("title", "Change to week view");
+        } else {
+            this.display = DISPLAY.WEEK;
+            $("#displayButton").attr("title", "Change to day view");
+        }
     }
 
     changeWeek(number) {
