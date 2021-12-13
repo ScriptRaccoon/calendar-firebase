@@ -16,7 +16,6 @@ export class Calendar {
         this.slotHeight = 30;
         this.weekStart = null;
         this.weekEnd = null;
-        this.snapShot = null;
     }
 
     setup() {
@@ -26,7 +25,7 @@ export class Calendar {
         this.calculateCurrentWeek();
         this.showWeek();
         this.setupControls();
-        this.loadEvents();
+        this.listenForUpdates();
     }
 
     setupControls() {
@@ -88,7 +87,7 @@ export class Calendar {
         this.weekStart = addDays(this.weekStart, 7 * number);
         this.weekEnd = addDays(this.weekEnd, 7 * number);
         this.showWeek();
-        this.loadEvents();
+        this.listenForUpdates();
     }
 
     showWeek() {
@@ -418,22 +417,18 @@ export class Calendar {
         this.openModal(event);
     }
 
-    async loadEvents() {
-        $(".event").remove();
-        try {
-            this.snapShot = await this.collection
-                .where("date", ">=", dateString(this.weekStart))
-                .where("date", "<=", dateString(this.weekEnd))
-                .get();
-        } catch (error) {
-            window.alert(error.message);
-            return;
-        }
-        this.snapShot.forEach((doc) => {
-            const event = doc.data();
-            event.id = doc.id;
-            this.show(event);
-        });
+    listenForUpdates() {
+        this.collection
+            .where("date", ">=", dateString(this.weekStart))
+            .where("date", "<=", dateString(this.weekEnd))
+            .onSnapshot((snap) => {
+                $(".event").remove();
+                snap.forEach((doc) => {
+                    const event = doc.data();
+                    event.id = doc.id;
+                    this.show(event);
+                });
+            });
     }
 
     async trash() {
@@ -443,10 +438,9 @@ export class Calendar {
                 "This cannot be undone. Are you sure?"
         );
         if (confirmed) {
-            this.snapShot = null;
             try {
-                const snapShot = await this.collection.get();
-                snapShot.forEach((doc) => {
+                const snap = await this.collection.get();
+                snap.forEach((doc) => {
                     this.collection.doc(doc.id).delete();
                     $(`#${doc.id}`).remove();
                 });
