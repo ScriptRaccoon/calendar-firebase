@@ -16,6 +16,7 @@ export class Calendar {
         this.slotHeight = 30;
         this.weekStart = null;
         this.weekEnd = null;
+        this.listener = null;
     }
 
     setup() {
@@ -87,6 +88,7 @@ export class Calendar {
         this.weekStart = addDays(this.weekStart, 7 * number);
         this.weekEnd = addDays(this.weekEnd, 7 * number);
         this.showWeek();
+        if (this.listener) this.listener();
         this.listenForUpdates();
     }
 
@@ -208,11 +210,9 @@ export class Calendar {
         if (this.mode == MODE.CREATE) {
             await this.create(event);
             this.closeModal();
-            this.show(event);
         } else if (this.mode == MODE.UPDATE) {
             await this.update(event);
             this.closeModal();
-            this.show(event);
         }
     }
 
@@ -418,11 +418,11 @@ export class Calendar {
     }
 
     listenForUpdates() {
-        this.collection
+        $(".event").remove();
+        this.listener = this.collection
             .where("date", ">=", dateString(this.weekStart))
             .where("date", "<=", dateString(this.weekEnd))
             .onSnapshot((snap) => {
-                $(".event").remove();
                 snap.forEach((doc) => {
                     const event = doc.data();
                     event.id = doc.id;
