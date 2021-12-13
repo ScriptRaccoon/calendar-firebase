@@ -114,12 +114,14 @@ textarea {
     max-width: 100px;
     text-align: center;
     color: var(--time-color);
+    z-index: 1;
+    border-right: 1px solid var(--grid-color);
 }
 
 .day {
     width: 100%;
     min-width: 110px;
-    border-left: 1px solid var(--grid-color);
+    border-right: 1px solid var(--grid-color);
 }
 
 .columnHeader {
