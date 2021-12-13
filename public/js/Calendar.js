@@ -29,14 +29,8 @@ export class Calendar {
         this.listenForUpdates();
     }
 
-    setupControls() {
-        $("#nextWeekBtn").click(() => this.changeWeek(1));
-        $("#prevWeekBtn").click(() => this.changeWeek(-1));
-        $("#addButton").click(() => this.addNewEvent());
-        $("#trashButton").click(() => this.trash());
-        $("#cancelButton").click(() => this.closeModal());
-        $("#logoutButton").click(() => this.logout());
-        $(".color").click(this.changeColor);
+    showEmail() {
+        $("#emailDisplay").text(this.user.email);
     }
 
     setupTimes() {
@@ -83,15 +77,6 @@ export class Calendar {
         this.weekEnd = addDays(this.weekStart, 6);
     }
 
-    changeWeek(number) {
-        this.weekOffset += number;
-        this.weekStart = addDays(this.weekStart, 7 * number);
-        this.weekEnd = addDays(this.weekEnd, 7 * number);
-        this.showWeek();
-        if (this.listener) this.listener();
-        this.listenForUpdates();
-    }
-
     showWeek() {
         const options = {
             month: "2-digit",
@@ -120,6 +105,37 @@ export class Calendar {
         } else {
             this.hideCurrentDay();
         }
+    }
+
+    setupControls() {
+        $("#nextWeekBtn").click(() => this.changeWeek(1));
+        $("#prevWeekBtn").click(() => this.changeWeek(-1));
+        $("#addButton").click(() => this.addNewEvent());
+        $("#trashButton").click(() => this.trash());
+        $("#cancelButton").click(() => this.closeModal());
+        $("#logoutButton").click(() => this.logout());
+        $(".color").click(this.changeColor);
+    }
+
+    logout() {
+        firebase
+            .auth()
+            .signOut()
+            .then(() => {
+                window.location.href = "./index.html";
+            })
+            .catch((error) => {
+                window.alert(error.message);
+            });
+    }
+
+    changeWeek(number) {
+        this.weekOffset += number;
+        this.weekStart = addDays(this.weekStart, 7 * number);
+        this.weekEnd = addDays(this.weekEnd, 7 * number);
+        this.showWeek();
+        if (this.listener) this.listener();
+        this.listenForUpdates();
     }
 
     showCurrentDay() {
@@ -204,6 +220,13 @@ export class Calendar {
             });
     }
 
+    closeModal() {
+        $("#eventModal").fadeOut(200);
+        $("#errors").text("");
+        $("#calendar").removeClass("opaque");
+        this.mode = MODE.VIEW;
+    }
+
     async submitModal(event) {
         const isValid = await this.validate(event);
         if (!isValid) return;
@@ -212,6 +235,43 @@ export class Calendar {
         } else if (this.mode == MODE.UPDATE) {
             await this.update(event);
         }
+    }
+
+    async create(event) {
+        this.read(event);
+        try {
+            const eventRef = await this.collection.add(event);
+            event.id = eventRef.id;
+            this.closeModal();
+        } catch (error) {
+            $("#errors").text(error.message);
+        }
+    }
+
+    async update(event) {
+        this.read(event);
+        try {
+            await this.collection.doc(event.id).update({
+                title: event.title,
+                start: event.start,
+                end: event.end,
+                date: event.date,
+                description: event.description,
+                color: event.color,
+            });
+            this.closeModal();
+        } catch (error) {
+            $("#errors").text(error.message);
+        }
+    }
+
+    read(event) {
+        event.title = $("#eventTitle").val();
+        event.start = $("#eventStart").val();
+        event.end = $("#eventEnd").val();
+        event.date = $("#eventDate").val();
+        event.description = $("#eventDescription").val();
+        event.color = $(".color.active").attr("data-color");
     }
 
     async delete(event) {
@@ -239,10 +299,32 @@ export class Calendar {
         this.openModal(copy);
     }
 
-    click(event) {
+    addNewEvent() {
         if (this.mode != MODE.VIEW) return;
-        this.mode = MODE.UPDATE;
+        this.mode = MODE.CREATE;
+        const event = {
+            start: "12:00",
+            end: "13:00",
+            date: dateString(this.weekStart),
+            title: "",
+            description: "",
+            color: "red",
+        };
         this.openModal(event);
+    }
+
+    listenForUpdates() {
+        this.listener = this.collection
+            .where("date", ">=", dateString(this.weekStart))
+            .where("date", "<=", dateString(this.weekEnd))
+            .onSnapshot((snap) => {
+                $(".event").remove();
+                snap.forEach((doc) => {
+                    const event = doc.data();
+                    event.id = doc.id;
+                    this.show(event);
+                });
+            });
     }
 
     show(event) {
@@ -306,6 +388,12 @@ export class Calendar {
         }
     }
 
+    click(event) {
+        if (this.mode != MODE.VIEW) return;
+        this.mode = MODE.UPDATE;
+        this.openModal(event);
+    }
+
     async validate(event) {
         const newStart = $("#eventStart").val();
         const newEnd = $("#eventEnd").val();
@@ -359,78 +447,6 @@ export class Calendar {
         return true;
     }
 
-    read(event) {
-        event.title = $("#eventTitle").val();
-        event.start = $("#eventStart").val();
-        event.end = $("#eventEnd").val();
-        event.date = $("#eventDate").val();
-        event.description = $("#eventDescription").val();
-        event.color = $(".color.active").attr("data-color");
-    }
-
-    async create(event) {
-        this.read(event);
-        try {
-            const eventRef = await this.collection.add(event);
-            event.id = eventRef.id;
-            this.closeModal();
-        } catch (error) {
-            $("#errors").text(error.message);
-        }
-    }
-
-    async update(event) {
-        this.read(event);
-        try {
-            await this.collection.doc(event.id).update({
-                title: event.title,
-                start: event.start,
-                end: event.end,
-                date: event.date,
-                description: event.description,
-                color: event.color,
-            });
-            this.closeModal();
-        } catch (error) {
-            $("#errors").text(error.message);
-        }
-    }
-
-    closeModal() {
-        $("#eventModal").fadeOut(200);
-        $("#errors").text("");
-        $("#calendar").removeClass("opaque");
-        this.mode = MODE.VIEW;
-    }
-
-    addNewEvent() {
-        if (this.mode != MODE.VIEW) return;
-        this.mode = MODE.CREATE;
-        const event = {
-            start: "12:00",
-            end: "13:00",
-            date: dateString(this.weekStart),
-            title: "",
-            description: "",
-            color: "red",
-        };
-        this.openModal(event);
-    }
-
-    listenForUpdates() {
-        this.listener = this.collection
-            .where("date", ">=", dateString(this.weekStart))
-            .where("date", "<=", dateString(this.weekEnd))
-            .onSnapshot((snap) => {
-                $(".event").remove();
-                snap.forEach((doc) => {
-                    const event = doc.data();
-                    event.id = doc.id;
-                    this.show(event);
-                });
-            });
-    }
-
     async trash() {
         if (this.mode != MODE.VIEW) return;
         const confirmed = window.confirm(
@@ -448,21 +464,5 @@ export class Calendar {
                 window.alert(error.message);
             }
         }
-    }
-
-    showEmail() {
-        $("#emailDisplay").text(this.user.email);
-    }
-
-    logout() {
-        firebase
-            .auth()
-            .signOut()
-            .then(() => {
-                window.location.href = "./index.html";
-            })
-            .catch((error) => {
-                window.alert(error.message);
-            });
     }
 }
