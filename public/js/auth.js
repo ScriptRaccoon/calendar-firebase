@@ -52,6 +52,7 @@ function handleRegister(e) {
         .then((userCredential) => {
             const user = userCredential.user;
             user.sendEmailVerification();
+            $("#registerForm .authError").text("");
             $("#registerForm .success").text(
                 "Registration was successful! Please check your inbox to verify your e-mail address. Then you can login."
             );

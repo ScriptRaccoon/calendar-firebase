@@ -333,12 +333,6 @@ textarea {
     background-color: var(--color-orange);
 }
 
-@media (max-width: 800px) {
-    #weekDisplay {
-        display: none;
-    }
-}
-
 /* auth Form */
 
 .formContainer {
@@ -407,4 +401,23 @@ textarea {
 
 .authError {
     color: var(--color-red);
+}
+
+/* media queries */
+
+@media (max-width: 940px) {
+    .header {
+        padding: 30px 10px 10px 10px;
+        flex-direction: column;
+    }
+    .weekControls,
+    .generalControls {
+        position: unset;
+        left: unset;
+        right: unset;
+        margin: 10px 0px;
+    }
+    #emailDisplay {
+        right: 2px;
+    }
 }
