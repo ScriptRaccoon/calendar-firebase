@@ -97,14 +97,6 @@ textarea {
     border-radius: 50%;
 }
 
-.generalControls .fa-plus {
-    font-size: 20px;
-}
-
-.generalControls .fa-trash-alt {
-    font-size: 18px;
-}
-
 /* calendar */
 
 #calendar {
