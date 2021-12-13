@@ -114,10 +114,6 @@ textarea {
     border-bottom: 1px solid var(--grid-color);
 }
 
-#calendar.opaque {
-    opacity: 0.4;
-}
-
 /* columns */
 
 .dayTime {
@@ -207,19 +203,25 @@ textarea {
 
 /* event modal */
 
-#eventModal {
+#modalContainer {
+    min-width: 100vw;
+    min-height: 100vh;
+    position: fixed;
     display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+}
+
+#eventModal {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0px 0px 20px var(--shadow-color);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
-    z-index: 10;
     padding: 20px;
-    width: 450px;
-    min-width: 250px;
+    max-width: min(450px, 90%);
+    flex-grow: 1;
 }
 
 #errors {
@@ -272,6 +274,9 @@ textarea {
 
 #eventControls {
     margin: 25px 0px 10px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .button {
@@ -279,7 +284,6 @@ textarea {
     background-color: var(--color-blue);
     color: white;
     cursor: pointer;
-    margin-right: 12px;
     border-radius: 2px;
 }
 
@@ -419,5 +423,11 @@ textarea {
     }
     #emailDisplay {
         right: 2px;
+    }
+}
+
+@media (max-width: 480px) {
+    #eventModal .button {
+        padding: 5px 10px;
     }
 }

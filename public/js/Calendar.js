@@ -209,9 +209,8 @@ export class Calendar {
             $("#submitButton").val("Create");
             $("#deleteButton, #copyButton").hide();
         }
-        $("#eventModal").fadeIn(200);
+        $("#modalContainer").fadeIn(200).css("display", "flex");
         $("#eventTitle").focus();
-        $("#calendar").addClass("opaque");
         $("#eventModal")
             .off("submit")
             .submit((e) => {
@@ -221,9 +220,8 @@ export class Calendar {
     }
 
     closeModal() {
-        $("#eventModal").fadeOut(200);
+        $("#modalContainer").fadeOut(200);
         $("#errors").text("");
-        $("#calendar").removeClass("opaque");
         this.mode = MODE.VIEW;
     }
 

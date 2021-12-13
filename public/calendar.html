@@ -17,58 +17,22 @@
 </head>
 <body>
 
-    <main>
-        <div id="emailDisplay"></div>
-        <header class="header">            
-            <h1>Where the time goes</h1>
-            <div class="weekControls">
-                <i id="prevWeekBtn" class="fas fa-angle-double-left"></i>
-                <span id="weekDisplay">
-                    <span id="weekStartDisplay"></span> - <span id="weekEndDisplay"></span>
-                </span>            
-                <i id="nextWeekBtn" class="fas fa-angle-double-right"></i>
-            </div>
-            <div class="generalControls">
-                <i id="addButton" class="fas fa-plus" title="Create event"></i>
-                <i id="trashButton" class="fas fa-trash-alt" title="Delete calendar"></i>
-                <i id="logoutButton" class="fas fa-sign-out-alt" title="Logout"></i>
-            </div>
-        </header>
-    
-        <section id="calendar">
-            <div class="dayTime">            
-            </div>
-            <div data-name="Monday" data-dayIndex = "0" class="day">           
-            </div>
-            <div data-name="Tuesday" data-dayIndex = "1" class="day">           
-            </div>
-            <div data-name="Wednesday" data-dayIndex = "2" class="day">           
-            </div>
-            <div data-name="Thursday" data-dayIndex = "3" class="day">            
-            </div>
-            <div data-name="Friday" data-dayIndex = "4" class="day">           
-            </div>
-            <div data-name="Saturday" data-dayIndex = "5" class="day">            
-            </div>
-            <div data-name="Sunday" data-dayIndex = "6" class="day">           
-            </div>
-        </section>
-    
+    <div id="modalContainer">
         <form id="eventModal">
             <h2 id="modalTitle">
             </h2>
             <label class="descriptor" for="title">Title</label>
             <div>
-                <input required type="text" id="eventTitle" name="title" class="shortInput"></input>
+                <input required type="text" id="eventTitle" name="title" class="shortInput" required autocomplete="off"></input>
             </div>
             <label class="descriptor" for="date">Date</label>
             <div>
-                <input required type="date" id="eventDate" name="date" class="shortInput"></input>
+                <input required type="date" id="eventDate" name="date" class="shortInput" required></input>
             </div>
             <label class="descriptor" for="time">Time</label>
             <div>
-                <input required type="time" id="eventStart" name="time" class="shortInput"></input>
-                ‒<input required type="time" id="eventEnd" name="time" class="shortInput"></input>
+                <input required type="time" id="eventStart" name="time" class="shortInput" required></input>
+                ‒<input required type="time" id="eventEnd" name="time" class="shortInput" required></input>
             </div>
             
             <label for="description">
@@ -96,8 +60,48 @@
             
             <div id="errors">    
             </div>
-            
         </form>
+    </div>
+
+    <main>
+        <aside id="emailDisplay"></aside>
+        <header class="header">            
+            <h1>Where the time goes</h1>
+
+            <div class="weekControls">
+                <i id="prevWeekBtn" class="fas fa-angle-double-left"></i>
+                <span id="weekDisplay">
+                    <span id="weekStartDisplay"></span> - <span id="weekEndDisplay"></span>
+                </span>            
+                <i id="nextWeekBtn" class="fas fa-angle-double-right"></i>
+            </div>
+            
+            <div class="generalControls">
+                <i id="addButton" class="fas fa-plus" title="Create event"></i>
+                <i id="trashButton" class="fas fa-trash-alt" title="Delete calendar"></i>
+                <i id="logoutButton" class="fas fa-sign-out-alt" title="Logout"></i>
+            </div>
+        
+        </header>
+    
+        <section id="calendar">
+            <div class="dayTime">            
+            </div>
+            <div data-name="Monday" data-dayIndex = "0" class="day">           
+            </div>
+            <div data-name="Tuesday" data-dayIndex = "1" class="day">           
+            </div>
+            <div data-name="Wednesday" data-dayIndex = "2" class="day">           
+            </div>
+            <div data-name="Thursday" data-dayIndex = "3" class="day">            
+            </div>
+            <div data-name="Friday" data-dayIndex = "4" class="day">           
+            </div>
+            <div data-name="Saturday" data-dayIndex = "5" class="day">            
+            </div>
+            <div data-name="Sunday" data-dayIndex = "6" class="day">           
+            </div>
+        </section>
     </main>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
