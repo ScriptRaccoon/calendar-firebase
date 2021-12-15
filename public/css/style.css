@@ -101,7 +101,9 @@ textarea {
 /* main */
 
 main {
-    padding-bottom: 50px;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 /* calendar */
@@ -109,9 +111,7 @@ main {
 #calendar {
     overflow-y: auto;
     overflow-x: hidden;
-    height: calc(16 * var(--slotHeight));
     position: relative;
-    resize: vertical;
 }
 
 /* column headers */
