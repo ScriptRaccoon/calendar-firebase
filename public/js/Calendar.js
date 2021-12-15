@@ -78,7 +78,7 @@ export class Calendar {
     }
 
     changeDay(direction) {
-        $(".day").removeClass("current");
+        $(".day, .columnHeader").removeClass("current");
         this.currentDayIndex += direction;
         if (this.currentDayIndex < 0) {
             this.changeWeek(-1);
@@ -90,6 +90,9 @@ export class Calendar {
         $(`.day[data-dayIndex="${this.currentDayIndex}"`).addClass(
             "current"
         );
+        $(
+            `.columnHeader[data-dayIndex="${this.currentDayIndex}"`
+        ).addClass("current");
     }
 
     calculateCurrentWeek() {
@@ -179,6 +182,9 @@ export class Calendar {
         $(`.day[data-dayIndex="${this.currentDayIndex}"`).addClass(
             "current"
         );
+        $(
+            `.columnHeader[data-dayIndex="${this.currentDayIndex}"`
+        ).addClass("current");
     }
 
     switchToWeekDisplay() {
@@ -189,7 +195,7 @@ export class Calendar {
             .addClass("fa-calendar-week");
 
         $("#displayButton").attr("title", "Change to day view");
-        $(".day").removeClass("current");
+        $(".day, .columnHeader").removeClass("current");
     }
 
     changeWeek(number) {

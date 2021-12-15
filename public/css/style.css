@@ -158,7 +158,7 @@ main {
     font-size: 14px;
     color: var(--time-color);
     cursor: pointer;
-    visibility: hidden;
+    display: none;
 }
 
 .columnHeader > i:hover {
@@ -194,6 +194,7 @@ main {
     width: 100%;
     min-width: 110px;
     border-right: 1px solid var(--grid-color);
+    position: relative;
 }
 
 /* TODO: */
@@ -209,23 +210,20 @@ main {
     padding-left: 100px;
 }
 
-#calendar.singleDay .day:not(.current) {
-    visibility: hidden;
+#calendar.singleDay .day:not(.current),
+#calendar.singleDay .columnHeader:not(.current) {
+    display: none;
 }
 
-#calendar.singleDay .columnHeader > i {
-    visibility: visible;
+#calendar.singleDay .columnHeader.current > i {
+    display: block;
 }
 
 #calendar.singleDay .date {
     color: var(--font-color);
 }
 
-/* slots */
-
-.day {
-    position: relative;
-}
+/* slots and times */
 
 .slot,
 .time {
