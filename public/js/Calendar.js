@@ -48,40 +48,25 @@ export class Calendar {
     }
 
     setupTimes() {
-        const header = $("<div></div>").addClass("columnHeader");
-        const slots = $("<div></div>").addClass("slots");
         for (let hour = 0; hour < 24; hour++) {
             $("<div></div>")
                 .attr("data-hour", hour)
                 .addClass("time")
                 .text(`${hour}:00 - ${hour + 1}:00`)
-                .appendTo(slots);
+                .appendTo($(".dayTime"));
         }
-        $(".dayTime").append(header).append(slots);
+        $("#calendar").scrollTop(7 * this.slotHeight);
     }
 
     setupDays() {
         const cal = this;
         $(".day").each(function () {
-            const dayIndex = parseInt($(this).attr("data-dayIndex"));
-            const name = $(this).attr("data-name");
-            const header = $("<div></div>")
-                .addClass("columnHeader")
-                .text(name);
-            const slots = $("<div></div>").addClass("slots");
-            $("<div></div>").addClass("dayDisplay").appendTo(header);
-            const arrowRight = $(
-                `<i class="fas fa-chevron-right"></i>`
-            )
-                .click(() => cal.changeDay(+1))
-                .appendTo(header);
-            const arrowLeft = $(`<i class="fas fa-chevron-left"></i>`)
-                .click(() => cal.changeDay(-1))
-                .appendTo(header);
+            const day = $(this);
+            const dayIndex = parseInt(day.attr("data-dayIndex"));
             for (let hour = 0; hour < 24; hour++) {
                 $("<div></div>")
                     .attr("data-hour", hour)
-                    .appendTo(slots)
+                    .appendTo(day)
                     .addClass("slot")
                     .click(() => cal.clickSlot(hour, dayIndex))
                     .hover(
@@ -89,7 +74,6 @@ export class Calendar {
                         () => cal.hoverOut()
                     );
             }
-            $(this).append(header).append(slots);
         });
     }
 
@@ -133,7 +117,7 @@ export class Calendar {
                 month: "2-digit",
                 day: "2-digit",
             });
-            $(`.day[data-dayIndex=${dayIndex}] .dayDisplay`).text(
+            $(`.columnHeader[data-dayIndex=${dayIndex}] .date`).text(
                 display
             );
         }
@@ -153,6 +137,12 @@ export class Calendar {
         $(".color").click(this.changeColor);
         $("#logoutButton").click(() => this.logout());
         $("#displayButton").click(() => this.toggleDisplay());
+        $(".columnHeader .fa-chevron-right").click(() =>
+            this.changeDay(+1)
+        );
+        $(".columnHeader .fa-chevron-left").click(() =>
+            this.changeDay(-1)
+        );
     }
 
     logout() {
