@@ -52,7 +52,7 @@ export class Calendar {
             $("<div></div>")
                 .attr("data-hour", hour)
                 .addClass("time")
-                .text(`${hour}:00 - ${hour + 1}:00`)
+                .html(`${hour}:00 &ndash; ${hour + 1}:00`)
                 .appendTo($(".dayTime"));
         }
         $("#calendar").scrollTop(7 * this.slotHeight);
