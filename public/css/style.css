@@ -204,6 +204,10 @@ main {
 
 /* single day display styles */
 
+#calendar.singleDay {
+    padding-right: 15px;
+}
+
 #calendar.singleDay .day:not(.current),
 #calendar.singleDay .columnHeader:not(.current) {
     display: none;
@@ -230,6 +234,7 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+    border-left: 1px solid var(--grid-color);
 }
 
 .slot:hover {
