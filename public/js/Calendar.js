@@ -210,11 +210,13 @@ export class Calendar {
     showCurrentDay() {
         const now = new Date();
         const dayIndex = getDayIndex(now);
-        $(`.day[data-dayIndex=${dayIndex}]`).addClass("currentDay");
+        $(`.columnHeader[data-dayIndex=${dayIndex}]`).addClass(
+            "currentDay"
+        );
     }
 
     hideCurrentDay() {
-        $(".day").removeClass("currentDay");
+        $(".columnHeader").removeClass("currentDay");
     }
 
     hoverOver(hour) {
@@ -438,7 +440,7 @@ export class Calendar {
                 24 * h - (endHour + endMinutes / 60) * h + 1 + "px"
             )
             .css("backgroundColor", `var(--color-${event.color})`)
-            .appendTo(`.day[data-dayIndex=${dayIndex}] .slots`);
+            .appendTo(`.day[data-dayIndex=${dayIndex}]`);
 
         if (duration < 45) {
             eventSlot
