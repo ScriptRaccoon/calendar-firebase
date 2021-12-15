@@ -107,7 +107,8 @@ main {
 /* calendar */
 
 #calendar {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     height: calc(16 * var(--slotHeight));
     position: relative;
     resize: vertical;
@@ -197,7 +198,6 @@ main {
 
 .day {
     width: 100%;
-    min-width: 110px;
     border-right: 1px solid var(--grid-color);
     position: relative;
 }
@@ -498,6 +498,9 @@ main {
     }
     #emailDisplay {
         right: 2px;
+    }
+    #calendar:not(.singleDay) .long {
+        display: none;
     }
 }
 
