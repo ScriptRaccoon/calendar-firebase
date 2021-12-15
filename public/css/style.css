@@ -204,11 +204,6 @@ main {
 
 /* single day display styles */
 
-#calendar.singleDay .day {
-    position: absolute;
-    padding-left: 100px;
-}
-
 #calendar.singleDay .day:not(.current),
 #calendar.singleDay .columnHeader:not(.current) {
     display: none;
