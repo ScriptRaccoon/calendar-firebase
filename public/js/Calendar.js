@@ -281,7 +281,6 @@ export class Calendar {
             $("#deleteButton, #copyButton").hide();
         }
         $("#modalContainer").fadeIn(200).css("display", "flex");
-        $("#eventTitle").focus();
         $("#eventModal")
             .off("submit")
             .submit((e) => {
