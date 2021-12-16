@@ -112,6 +112,7 @@ main {
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
+    display: none;
 }
 
 /* column headers */

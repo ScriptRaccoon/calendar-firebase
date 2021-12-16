@@ -41,6 +41,7 @@ export class Calendar {
         if (window.innerWidth < 900) {
             this.switchToDayDisplay();
         }
+        $("#calendar").fadeIn();
     }
 
     showEmail() {
