@@ -344,6 +344,10 @@ main {
     border-bottom: 1px solid var(--font-color);
 }
 
+#eventModal input[type="time"] {
+    max-width: 7em;
+}
+
 #eventTitle {
     width: 95% !important;
 }
