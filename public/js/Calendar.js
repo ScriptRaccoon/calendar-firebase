@@ -1,4 +1,9 @@
-import { dateString, getDayIndex, addDays } from "./helper.js";
+import {
+    dateString,
+    getDayIndex,
+    addDays,
+    getPointerPosition,
+} from "./helper.js";
 import { db } from "./firebase.js";
 
 const MODE = {
@@ -24,6 +29,8 @@ export class Calendar {
         this.weekEnd = null;
         this.listener = null;
         this.currentDayIndex = getDayIndex(new Date());
+        this.swipeStart = null;
+        this.swipeEnd = null;
     }
 
     setup() {
@@ -35,6 +42,7 @@ export class Calendar {
         this.showWeek();
         this.setupControls();
         this.listenForUpdates();
+        this.enableSwipe();
     }
 
     detectDisplay() {
@@ -69,7 +77,7 @@ export class Calendar {
                     .attr("data-hour", hour)
                     .appendTo(day)
                     .addClass("slot")
-                    .click(() => cal.clickSlot(hour, dayIndex))
+                    .on("click", () => cal.clickSlot(hour, dayIndex))
                     .hover(
                         () => cal.hoverOver(hour),
                         () => cal.hoverOut()
@@ -95,6 +103,14 @@ export class Calendar {
         $(
             `.columnHeader[data-dayIndex="${this.currentDayIndex}"`
         ).addClass("current");
+    }
+
+    changeWeekOrDay(direction) {
+        if (this.display == DISPLAY.WEEK) {
+            this.changeWeek(direction);
+        } else {
+            this.changeDay(direction);
+        }
     }
 
     calculateCurrentWeek() {
@@ -540,5 +556,23 @@ export class Calendar {
                 window.alert(error.message);
             }
         }
+    }
+
+    enableSwipe() {
+        const range = 20;
+        $("#calendar").on("pointerdown", (e) => {
+            this.swipeStart = getPointerPosition(e);
+        });
+        $("#calendar").on("pointerup", (e) => {
+            if (!this.swipeStart) return;
+            this.swipeEnd = getPointerPosition(e);
+            if (this.swipeEnd.x > this.swipeStart.x + range) {
+                this.changeWeekOrDay(-1);
+            } else if (this.swipeEnd.x + range < this.swipeStart.x) {
+                this.changeWeekOrDay(+1);
+            }
+            this.swipeStart = null;
+            this.swipeEnd = null;
+        });
     }
 }
