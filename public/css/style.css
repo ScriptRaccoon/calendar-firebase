@@ -136,6 +136,7 @@ main {
     border-right: 1px solid var(--grid-color);
     border-bottom: 1px solid var(--grid-color);
     width: 100%;
+    background-color: var(--slot-hover-color);
 }
 
 .columnHeader h2 {
@@ -148,6 +149,7 @@ main {
     min-width: 100px;
     max-width: 100px;
     border-top: none;
+    background: none;
 }
 
 .columnHeader .date {
@@ -180,7 +182,11 @@ main {
 }
 
 .columnHeader.currentDay {
-    background: var(--slot-hover-color);
+    background: var(--grid-color);
+}
+
+.columnHeader.currentDay .date {
+    color: var(--font-color);
 }
 
 /* event container */
