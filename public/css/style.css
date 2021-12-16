@@ -205,12 +205,18 @@ main {
 /* single day display styles */
 
 #calendar.singleDay {
-    padding-right: 15px;
+    width: min(95%, 800px);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #calendar.singleDay .day:not(.current),
 #calendar.singleDay .columnHeader:not(.current) {
     display: none;
+}
+
+#calendar.singleDay .columnHeader.current {
+    border-left: 1px solid var(--grid-color);
 }
 
 #calendar.singleDay .columnHeader.current > i {
