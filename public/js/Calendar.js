@@ -343,12 +343,16 @@ export class Calendar {
     }
 
     async delete(event) {
-        try {
-            await this.collection.doc(event.id).delete();
-            $(`#${event.id}`).remove();
-            this.closeModal();
-        } catch (error) {
-            $("#errors").text(error.message);
+        if (
+            window.confirm("Do you really want to delete this event?")
+        ) {
+            try {
+                await this.collection.doc(event.id).delete();
+                $(`#${event.id}`).remove();
+                this.closeModal();
+            } catch (error) {
+                $("#errors").text(error.message);
+            }
         }
     }
 
