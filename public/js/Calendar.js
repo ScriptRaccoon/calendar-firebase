@@ -78,6 +78,7 @@ export class Calendar {
     }
 
     changeDay(direction) {
+        if (this.display == DISPLAY.WEEK) return;
         $(".day, .columnHeader").removeClass("current");
         this.currentDayIndex += direction;
         if (this.currentDayIndex < 0) {
@@ -374,10 +375,12 @@ export class Calendar {
     addNewEvent() {
         if (this.mode != MODE.VIEW) return;
         this.mode = MODE.CREATE;
+        const dayIndex =
+            this.display == DISPLAY.DAY ? this.currentDayIndex : 0;
         const event = {
             start: "12:00",
             end: "13:00",
-            date: dateString(this.weekStart),
+            date: dateString(addDays(this.weekStart, dayIndex)),
             title: "",
             description: "",
             color: "red",
