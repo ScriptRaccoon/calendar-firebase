@@ -58,11 +58,12 @@ export class Calendar {
 
     setupTimes() {
         for (let hour = 0; hour < 24; hour++) {
-            $("<div></div>")
+            const time = $("<div></div>")
                 .attr("data-hour", hour)
                 .addClass("time")
-                .html(`${hour}:00 &ndash; ${hour + 1}:00`)
                 .appendTo($(".dayTime"));
+            if (hour > 0)
+                $("<span></span>").text(`${hour}:00`).appendTo(time);
         }
         $("#calendar").scrollTop(7 * this.slotHeight);
     }

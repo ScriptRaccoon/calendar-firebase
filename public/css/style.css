@@ -253,6 +253,13 @@ main {
     border-left: 1px solid var(--grid-color);
 }
 
+.time > span {
+    background-color: white;
+    padding: 0px 5px;
+    border-radius: 4px;
+    transform: translateY(calc(-0.5 * var(--slotHeight)));
+}
+
 .slot:hover {
     cursor: pointer;
     background-color: var(--slot-hover-color);
@@ -260,7 +267,6 @@ main {
 
 .time.currentTime {
     background-color: var(--slot-hover-color);
-    color: var(--font-color);
 }
 
 /* events */
