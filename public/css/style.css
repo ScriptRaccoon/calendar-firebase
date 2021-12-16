@@ -11,6 +11,7 @@
     --color-green: rgb(21, 129, 21);
     --color-orange: rgb(233, 153, 4);
     --slotHeight: 30px;
+    --timeWidth: 100px;
 }
 
 * {
@@ -127,7 +128,6 @@ main {
 
 .columnHeader {
     text-align: center;
-    font-size: 20px;
     padding: 10px 0px;
     height: 65px;
     overflow: hidden;
@@ -146,8 +146,8 @@ main {
 
 .columnHeader:first-child {
     width: 100%;
-    min-width: 100px;
-    max-width: 100px;
+    min-width: var(--timeWidth);
+    max-width: var(--timeWidth);
     border-top: none;
     background: none;
 }
@@ -199,8 +199,8 @@ main {
 
 .dayTime {
     width: 100%;
-    min-width: 100px;
-    max-width: 100px;
+    min-width: var(--timeWidth);
+    max-width: var(--timeWidth);
     text-align: center;
     color: var(--time-color);
     border-right: 1px solid var(--grid-color);
@@ -533,5 +533,14 @@ main {
 @media (max-width: 480px) {
     #eventModal .button {
         padding: 5px 10px;
+    }
+    :root {
+        --timeWidth: 65px;
+    }
+    .columnHeader h2 {
+        font-size: 20px;
+    }
+    .columnHeader .date {
+        font-size: 14px;
     }
 }
