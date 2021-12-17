@@ -29,10 +29,14 @@
             <div>
                 <input required type="date" id="eventDate" name="date" class="shortInput" required></input>
             </div>
-            <label class="descriptor" for="time">Time</label>
-            <div>
+            <label id="timeLabel" class="descriptor" for="time">Time</label>
+            <div id="timeInputs">
                 <input required type="time" id="eventStart" name="time" class="shortInput" required></input
                 >‒<input required type="time" id="eventEnd" name="time" class="shortInput" required></input>
+            </div>
+            <div>
+                <label for="allDayCheckBox">All day</label>
+                <input type="checkbox" id="allDayCheckBox">
             </div>
             
             <label for="description">

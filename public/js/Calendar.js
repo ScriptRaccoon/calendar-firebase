@@ -154,6 +154,12 @@ export class Calendar {
         $(".columnHeader .fa-chevron-left").click(() =>
             this.changeDay(-1)
         );
+        $("#allDayCheckBox").change(() => this.toggleTimes());
+    }
+
+    toggleTimes() {
+        $("#timeLabel").toggle();
+        $("#timeInputs").toggle();
     }
 
     logout() {
@@ -252,6 +258,7 @@ export class Calendar {
             title: "",
             description: "",
             color: "red",
+            allDay: false,
         };
         this.openModal(event);
     }
@@ -272,6 +279,12 @@ export class Calendar {
         $("#eventStart").val(event.start);
         $("#eventEnd").val(event.end);
         $("#eventDescription").val(event.description);
+        $("#allDayCheckBox").prop("checked", event.allDay);
+        if (event.allDay) {
+            $("#timeLabel, #timeInputs").hide();
+        } else {
+            $("#timeLabel, #timeInputs").show();
+        }
         $(".color").removeClass("active");
         $(`.color[data-color=${event.color}]`).addClass("active");
         if (this.mode == MODE.UPDATE) {
@@ -334,6 +347,7 @@ export class Calendar {
                 date: event.date,
                 description: event.description,
                 color: event.color,
+                allDay: event.allDay,
             });
             this.closeModal();
         } catch (error) {
@@ -347,6 +361,7 @@ export class Calendar {
         event.end = $("#eventEnd").val();
         event.date = $("#eventDate").val();
         event.description = $("#eventDescription").val();
+        event.allDay = $("#allDayCheckBox").prop("checked");
         event.color = $(".color.active").attr("data-color");
     }
 
@@ -375,6 +390,7 @@ export class Calendar {
             date: event.date,
             description: event.description,
             color: event.color,
+            allDay: event.allDay,
         };
         this.openModal(copy);
     }
@@ -391,6 +407,7 @@ export class Calendar {
             title: "",
             description: "",
             color: "red",
+            allDay: false,
         };
         this.openModal(event);
     }
