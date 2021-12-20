@@ -58,7 +58,7 @@ export class Calendar {
             const time = $("<div></div>")
                 .attr("data-hour", hour)
                 .addClass("time")
-                .appendTo($(".dayTime"));
+                .appendTo(".dayTime");
             if (hour > 0)
                 $("<span></span>").text(`${hour}:00`).appendTo(time);
         }
@@ -70,6 +70,7 @@ export class Calendar {
         $(".day").each(function () {
             const day = $(this);
             const dayIndex = parseInt(day.attr("data-dayIndex"));
+            $("<div></div>").addClass("allDaySection").appendTo(day);
             for (let hour = 0; hour < 24; hour++) {
                 $("<div></div>")
                     .attr("data-hour", hour)
@@ -447,43 +448,61 @@ export class Calendar {
         }
 
         const h = this.slotHeight;
-
-        const startHour = parseInt(event.start.substring(0, 2));
-        const endHour = parseInt(event.end.substring(0, 2));
-        const startMinutes = parseInt(event.start.substring(3, 5));
-        const endMinutes = parseInt(event.end.substring(3, 5));
         const dayIndex = getDayIndex(new Date(event.date));
 
-        const duration =
-            (new Date(`${event.date}T${event.end}`).getTime() -
-                new Date(`${event.date}T${event.start}`).getTime()) /
-            (1000 * 60);
+        if (!event.allDay) {
+            const startHour = parseInt(event.start.substring(0, 2));
+            const endHour = parseInt(event.end.substring(0, 2));
+            const startMinutes = parseInt(
+                event.start.substring(3, 5)
+            );
+            const endMinutes = parseInt(event.end.substring(3, 5));
 
-        eventSlot
-            .text(event.title)
-            .css(
-                "top",
-                (startHour + startMinutes / 60) * h + 2 + "px"
-            )
-            .css(
-                "bottom",
-                24 * h - (endHour + endMinutes / 60) * h + 1 + "px"
-            )
-            .css("backgroundColor", `var(--color-${event.color})`)
-            .appendTo(`.day[data-dayIndex=${dayIndex}]`);
+            const duration =
+                (new Date(`${event.date}T${event.end}`).getTime() -
+                    new Date(
+                        `${event.date}T${event.start}`
+                    ).getTime()) /
+                (1000 * 60);
 
-        if (duration < 45) {
             eventSlot
-                .removeClass("shortEvent")
-                .addClass("veryShortEvent");
-        } else if (duration < 59) {
-            eventSlot
-                .removeClass("veryShortEvent")
-                .addClass("shortEvent");
+                .removeClass("allDay")
+                .text(event.title)
+                .css(
+                    "top",
+                    (startHour + startMinutes / 60) * h + 1 + "px"
+                )
+                .css(
+                    "bottom",
+                    24 * h -
+                        (endHour + endMinutes / 60) * h +
+                        2 +
+                        "px"
+                )
+                .css("backgroundColor", `var(--color-${event.color})`)
+                .appendTo(`.day[data-dayIndex=${dayIndex}]`);
+
+            if (duration < 45) {
+                eventSlot
+                    .removeClass("shortEvent")
+                    .addClass("veryShortEvent");
+            } else if (duration < 59) {
+                eventSlot
+                    .removeClass("veryShortEvent")
+                    .addClass("shortEvent");
+            } else {
+                eventSlot
+                    .removeClass("shortEvent")
+                    .removeClass("veryShortEvent");
+            }
         } else {
             eventSlot
-                .removeClass("shortEvent")
-                .removeClass("veryShortEvent");
+                .addClass("allDay")
+                .text(event.title)
+                .css("backgroundColor", `var(--color-${event.color})`)
+                .appendTo(
+                    `.columnHeader[data-dayIndex=${dayIndex}] .allDaySection`
+                );
         }
     }
 
@@ -494,6 +513,7 @@ export class Calendar {
     }
 
     async validate(event) {
+        if (event.allDay) return true;
         const newStart = $("#eventStart").val();
         const newEnd = $("#eventEnd").val();
         const newDate = $("#eventDate").val();
@@ -513,6 +533,7 @@ export class Calendar {
                 const otherId = doc.id;
                 const other = doc.data();
                 if (
+                    !other.allDay &&
                     otherId != event.id &&
                     other.end > newStart &&
                     other.start < newEnd

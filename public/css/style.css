@@ -130,7 +130,7 @@ main {
     text-align: center;
     padding: 10px 0px;
     height: 65px;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     border-top: 1px solid var(--grid-color);
     border-right: 1px solid var(--grid-color);
@@ -237,6 +237,10 @@ main {
     color: var(--font-color);
 }
 
+#calendar.singleDay .allDaySection {
+    padding-left: 100px;
+}
+
 /* slots and times */
 
 .slot,
@@ -296,6 +300,22 @@ main {
     margin-top: -1px;
     padding: 0px 5px;
     font-size: 10px;
+}
+
+/* all day events */
+
+.allDaySection {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: calc(100% - 1px);
+}
+
+.event.allDay {
+    height: calc(var(--slotHeight) - 2px);
+    position: relative;
+    margin-top: 2px;
+    border: 1px solid var(--font-color);
 }
 
 /* event modal */
