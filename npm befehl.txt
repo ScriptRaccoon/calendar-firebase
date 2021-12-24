@@ -1,9 +1,0 @@
-npm init --y
-
-npm i -D gulp gulp-uglify gulp-clean-css gulp-concat gulp-sourcemaps
-
-
-"scripts": {
-    "build": "gulp build",
-    "dev": "gulp watch"
-  },
