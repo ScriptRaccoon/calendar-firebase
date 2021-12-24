@@ -60,7 +60,7 @@ function setupVariables() {
 
 function detectDisplay() {
     if (window.innerWidth < 900) {
-        switchToDayDisplay();
+        switchToSingleDayDisplay();
     }
     $("#calendar").fadeIn();
 }
@@ -185,4 +185,21 @@ function listenForUpdates() {
                 showEvent(event);
             });
         });
+}
+
+async function loadEvents() {
+    const events = [];
+    const snapShot = await collection
+        .where("date", ">=", dateString(weekStart))
+        .where("date", "<=", dateString(weekEnd))
+        .get();
+    snapShot.forEach((doc) => {
+        const event = doc.data();
+        event.id = doc.id;
+        events.push(event);
+    });
+    $(".event").remove();
+    for (const event of events) {
+        showEvent(event);
+    }
 }

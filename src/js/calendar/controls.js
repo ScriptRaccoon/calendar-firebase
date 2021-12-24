@@ -16,10 +16,11 @@ function setupControls() {
     $("#allDayCheckBox").change(toggleTimes);
 }
 
-function changeWeek(number) {
+async function changeWeek(number) {
     weekOffset += number;
     weekStart = addDays(weekStart, 7 * number);
     weekEnd = addDays(weekEnd, 7 * number);
+    await loadEvents();
     showWeek();
     if (listener) listener();
     listenForUpdates();
