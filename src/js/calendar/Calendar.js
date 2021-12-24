@@ -1,10 +1,10 @@
-import {
-    dateString,
-    getDayIndex,
-    addDays,
-    getPointerPosition,
-} from "./helper.js";
-import { db } from "./firebase.js";
+firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+        window.location.href = "./index.html";
+    } else {
+        new Calendar(user).setup();
+    }
+});
 
 const MODE = {
     VIEW: 1,
@@ -17,7 +17,7 @@ const DISPLAY = {
     WEEK: 2,
 };
 
-export class Calendar {
+class Calendar {
     constructor(user) {
         this.user = user;
         this.collection = db.collection(this.user.uid);
@@ -543,8 +543,8 @@ export class Calendar {
             });
             if (collidingEvent) {
                 $("#errors").text(
-                    `This collides with the event '${collidingEvent.title}'
-                         (${collidingEvent.start} - ${collidingEvent.end}).`
+                    `This collides with the event '${collidingEvent.title}'` +
+                        `(${collidingEvent.start} - ${collidingEvent.end}).`
                 );
                 return false;
             }

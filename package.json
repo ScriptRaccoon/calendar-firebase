@@ -1,0 +1,28 @@
+{
+  "name": "calendar",
+  "version": "1.0.0",
+  "description": "This is a calendar app built just using JavaScript (jQuery), CSS and HTML.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "build": "gulp build",
+    "dev": "gulp watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScriptRaccoon/calendar.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ScriptRaccoon/calendar/issues"
+  },
+  "homepage": "https://github.com/ScriptRaccoon/calendar#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}
