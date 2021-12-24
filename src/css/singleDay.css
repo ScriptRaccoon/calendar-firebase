@@ -1,0 +1,26 @@
+#calendar.singleDay {
+    width: min(95%, 800px);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#calendar.singleDay .day:not(.current),
+#calendar.singleDay .columnHeader:not(.current) {
+    display: none;
+}
+
+#calendar.singleDay .columnHeader.current {
+    border-left: 1px solid var(--grid-color);
+}
+
+#calendar.singleDay .columnHeader.current > i {
+    display: flex;
+}
+
+#calendar.singleDay .date {
+    color: var(--font-color);
+}
+
+#calendar.singleDay .allDaySection {
+    padding-left: 100px;
+}

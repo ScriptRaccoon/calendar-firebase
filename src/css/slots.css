@@ -1,0 +1,29 @@
+.slot,
+.time {
+    border-bottom: 1px solid var(--grid-color);
+    height: var(--slotHeight);
+}
+
+.time {
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 1px solid var(--grid-color);
+}
+
+.time > span {
+    background-color: white;
+    padding: 0px 5px;
+    border-radius: 4px;
+    transform: translateY(calc(-0.5 * var(--slotHeight)));
+}
+
+.slot:hover {
+    cursor: pointer;
+    background-color: var(--slot-hover-color);
+}
+
+.time.currentTime {
+    background-color: var(--slot-hover-color);
+}

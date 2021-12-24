@@ -1,0 +1,43 @@
+/* general stuff */
+
+:root {
+    --grid-color: #cecece;
+    --time-color: #777;
+    --slot-hover-color: #eee;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    --font-color: #222;
+    --color-red: rgb(190, 35, 15);
+    --color-blue: rgb(54, 92, 175);
+    --color-green: rgb(21, 129, 21);
+    --color-orange: rgb(233, 153, 4);
+    --slotHeight: 30px;
+    --timeWidth: 100px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--font-color);
+    overflow-x: hidden;
+}
+
+input,
+textarea,
+button {
+    font-family: inherit;
+    font-size: inherit;
+    outline: none;
+    border: none;
+    background: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}

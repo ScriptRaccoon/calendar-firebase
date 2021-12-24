@@ -1,0 +1,14 @@
+.dayTime {
+    width: 100%;
+    min-width: var(--timeWidth);
+    max-width: var(--timeWidth);
+    text-align: center;
+    color: var(--time-color);
+    border-right: 1px solid var(--grid-color);
+}
+
+.day {
+    width: 100%;
+    border-right: 1px solid var(--grid-color);
+    position: relative;
+}

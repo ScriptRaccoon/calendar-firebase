@@ -1,0 +1,35 @@
+@media (max-width: 940px) {
+    .header {
+        padding: 30px 10px 10px 10px;
+        flex-direction: column;
+    }
+    .weekControls,
+    .generalControls {
+        position: unset;
+        left: unset;
+        right: unset;
+        margin: 10px 0px;
+    }
+    #emailDisplay {
+        top: 5px;
+        right: 5px;
+    }
+    #calendar:not(.singleDay) .long {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    #eventModal .button {
+        padding: 5px 10px;
+    }
+    :root {
+        --timeWidth: 65px;
+    }
+    .columnHeader h2 {
+        font-size: 20px;
+    }
+    .columnHeader .date {
+        font-size: 14px;
+    }
+}

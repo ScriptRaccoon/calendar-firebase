@@ -1,0 +1,96 @@
+#modalContainer {
+    min-width: 100vw;
+    min-height: 100vh;
+    position: fixed;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 5px;
+}
+
+#eventModal {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px var(--shadow-color);
+    padding: 20px;
+    max-width: min(450px, 90%);
+    flex-grow: 1;
+}
+
+#errors {
+    color: var(--color-red);
+}
+
+#modalTitle {
+    margin-bottom: 20px;
+}
+
+#eventModal label {
+    font-weight: bold;
+    display: inline-block;
+    margin: 20px 10px 5px 0px;
+}
+
+.shortInput {
+    border-bottom: 1px solid var(--grid-color);
+    padding: 2px 1px;
+}
+
+.shortInput:focus {
+    border-bottom: 1px solid var(--font-color);
+}
+
+#eventModal input[type="time"] {
+    max-width: 7em;
+}
+
+#eventTitle {
+    width: 95% !important;
+}
+
+#eventStart {
+    margin-right: 10px;
+}
+
+#eventEnd {
+    margin-left: 10px;
+}
+
+#eventDescription {
+    border: 1px solid var(--grid-color);
+    width: 95% !important;
+    height: 170px;
+    min-height: 40px;
+    resize: vertical;
+    padding: 4px;
+}
+
+#eventDescription:focus {
+    border: 1px solid var(--font-color);
+}
+
+#eventControls {
+    margin: 25px 0px 10px 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.button {
+    padding: 10px 20px;
+    background-color: var(--color-blue);
+    color: white;
+    cursor: pointer;
+    border-radius: 2px;
+}
+
+#deleteButton {
+    background-color: var(--color-red);
+}
+
+.button:hover,
+.button:focus {
+    opacity: 0.8;
+}

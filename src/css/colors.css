@@ -1,0 +1,38 @@
+#colors {
+    height: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 150px;
+}
+
+.color {
+    width: 20px !important;
+    height: 20px !important;
+    border-radius: 50%;
+    border: 5px solid white;
+    box-sizing: content-box;
+    cursor: pointer;
+}
+
+.color.active,
+.color:focus,
+.color:hover {
+    border: 5px solid var(--grid-color);
+}
+
+.color-red {
+    background-color: var(--color-red);
+}
+
+.color-blue {
+    background-color: var(--color-blue);
+}
+
+.color-green {
+    background-color: var(--color-green);
+}
+
+.color-orange {
+    background-color: var(--color-orange);
+}

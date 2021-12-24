@@ -1,0 +1,79 @@
+/* column headers */
+
+#columnHeaders {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 10;
+}
+
+.columnHeader {
+    text-align: center;
+    padding: 10px 0px;
+    height: 65px;
+    overflow: visible;
+    position: relative;
+    border-top: 1px solid var(--grid-color);
+    border-right: 1px solid var(--grid-color);
+    border-bottom: 1px solid var(--grid-color);
+    width: 100%;
+    background-color: var(--slot-hover-color);
+}
+
+.columnHeader h2 {
+    font-weight: 400;
+    font-size: 22px;
+}
+
+.columnHeader:first-child {
+    width: 100%;
+    min-width: var(--timeWidth);
+    max-width: var(--timeWidth);
+    border-top: none;
+    background: none;
+}
+
+.columnHeader .date {
+    font-size: 15px;
+    color: var(--time-color);
+}
+
+.columnHeader > i {
+    padding: 0px 10px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    font-size: 24px;
+    color: var(--time-color);
+    cursor: pointer;
+    display: none;
+    align-items: center;
+}
+
+.columnHeader > i:hover {
+    color: var(--font-color);
+}
+
+.columnHeader .fa-chevron-right {
+    right: 0px;
+}
+
+.columnHeader .fa-chevron-left {
+    left: 0px;
+}
+
+.columnHeader.today {
+    background: var(--grid-color);
+}
+
+.columnHeader.today .date {
+    color: var(--font-color);
+}
+
+.columnHeader .allDaySection {
+    position: absolute;
+    left: 10%;
+    right: 10%;
+    top: calc(100% - 1px);
+}

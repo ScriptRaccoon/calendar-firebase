@@ -1,0 +1,33 @@
+.event {
+    position: absolute;
+    left: 1px;
+    width: calc(100% - 2px);
+    border-radius: 4px;
+    padding: 2px 5px;
+    color: white;
+    overflow: hidden;
+    cursor: pointer;
+    transition: filter 160ms linear;
+}
+
+.event:hover {
+    filter: brightness(1.1);
+}
+
+.shortEvent {
+    padding: 0px 5px;
+    font-size: 12px;
+}
+
+.veryShortEvent {
+    margin-top: -1px;
+    padding: 0px 5px;
+    font-size: 10px;
+}
+
+.event.allDay {
+    height: calc(var(--slotHeight) - 2px);
+    position: relative;
+    margin-top: 2px;
+    border: 1px solid var(--font-color);
+}

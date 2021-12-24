@@ -1,0 +1,19 @@
+.weekControls {
+    position: absolute;
+    left: 20px;
+    font-size: 22px;
+}
+
+.generalControls {
+    position: absolute;
+    right: 20px;
+}
+
+.generalControls i {
+    line-height: 25px;
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 3px solid var(--time-color);
+    border-radius: 50%;
+}
