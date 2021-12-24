@@ -75,22 +75,31 @@
             <aside id="emailDisplay"></aside>
             <h1>Where the time goes</h1>
             <div class="weekControls">
-                <button id="prevWeekBtn">
+                <button class="controlButton" id="prevWeekButton">
                     <i class="fas fa-angle-double-left"></i>
                 </button>                
                 <span id="weekDisplay">
                     <span id="weekStartDisplay"></span> &ndash; <span id="weekEndDisplay"></span>
                 </span>            
-                <button id="nextWeekBtn">
+                <button class="controlButton" id="nextWeekButton">
                     <i class="fas fa-angle-double-right"></i>
                 </button>
             </div>
             
             <div class="generalControls">
-                <i id="displayButton" class="fas fa-calendar-week" title="Change to day view"></i>
-                <i id="addButton" class="fas fa-plus" title="Create event"></i>
-                <i id="trashButton" class="fas fa-trash-alt" title="Delete calendar"></i>
-                <i id="logoutButton" class="fas fa-sign-out-alt" title="Logout"></i>
+                <button class="controlButton" id="displayButton" title="Change to day view">
+                    <i class="fas fa-calendar-week" ></i>
+                </button>
+                <button class="controlButton" id="addButton" title="Create event">
+                    <i class="fas fa-plus" ></i>
+                </button>
+                <button class="controlButton" id="trashButton"  title="Delete calendar">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                <button class="controlButton" id="logoutButton" title="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+       
             </div>
         
         </header>

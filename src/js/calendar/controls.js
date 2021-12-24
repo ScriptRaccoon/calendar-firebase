@@ -1,6 +1,6 @@
 function setupControls() {
-    $("#nextWeekBtn").click(() => changeWeek(1));
-    $("#prevWeekBtn").click(() => changeWeek(-1));
+    $("#nextWeekButton").click(() => changeWeek(1));
+    $("#prevWeekButton").click(() => changeWeek(-1));
     $("#displayButton").click(toggleDisplay);
     $("#addButton").click(addNewEvent);
     $("#trashButton").click(trashCalendar);

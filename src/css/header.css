@@ -12,18 +12,6 @@
     font-weight: 400;
 }
 
-.header i {
-    cursor: pointer;
-    margin: 0px 5px;
-    color: var(--time-color);
-    transition: all 80ms linear;
-}
-
-.header i:hover {
-    color: var(--font-color);
-    border-color: var(--font-color);
-}
-
 .header .subtitle {
     font-size: 18px;
     opacity: 0.8;
