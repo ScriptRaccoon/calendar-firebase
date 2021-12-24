@@ -48,16 +48,23 @@
                 <div>
                     <label for="registerEmailInput">E-mail</label>
                     <input type="email" id="registerEmailInput" required autocomplete="off">
+                    <p class="hint">
+                        Please choose a real e-mail address. You need to verify it before using the calendar.
+                    </p>
                 </div>
+               
                 <div>
                     <label for="registerPasswordInput">Password</label>
                     <input type="password" id="registerPasswordInput" required autocomplete="off">
+                    <p class="hint">
+                        Choose at least 6 characters.
+                    </p>
                 </div>
                 <input type="submit" class="button" value="Register">
                 <div class="authError"></div>
                 <div class="success"></div>
                 <div class="question">
-                    Don't have an account? <input type='button' class="changeBtn" value="Login"> instead.
+                    Already have an account? <input type='button' class="changeBtn" value="Login"> instead.
                 </div>
             </form>
             

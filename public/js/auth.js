@@ -52,9 +52,15 @@ function handleRegister(e) {
         .then((userCredential) => {
             const user = userCredential.user;
             user.sendEmailVerification();
+            $(`#registerForm input[type='password'],
+                #registerForm input[type='email'],
+                #registerForm input[type='submit']`).prop(
+                "disabled",
+                true
+            );
             $("#registerForm .authError").text("");
             $("#registerForm .success").text(
-                "Registration was successful! Please check your inbox to verify your e-mail address. Then you can login."
+                "Registration was successful! Please check your inbox to verify your e-mail address. After this verification you can login."
             );
         })
         .catch((error) => {
