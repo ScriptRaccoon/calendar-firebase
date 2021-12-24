@@ -544,7 +544,8 @@ main {
         margin: 10px 0px;
     }
     #emailDisplay {
-        right: 2px;
+        top: 5px;
+        right: 5px;
     }
     #calendar:not(.singleDay) .long {
         display: none;
