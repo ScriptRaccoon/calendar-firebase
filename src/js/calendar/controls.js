@@ -7,8 +7,12 @@ function setupControls() {
     $("#logoutButton").click(logout);
     $("#cancelButton").click(closeModal);
     $(".color").click(changeColor);
-    $(".columnHeader .fa-chevron-right").click(() => changeDay(+1));
-    $(".columnHeader .fa-chevron-left").click(() => changeDay(-1));
+    $(".columnHeader .fa-chevron-right").click(() =>
+        changeCurrentDay(+1)
+    );
+    $(".columnHeader .fa-chevron-left").click(() =>
+        changeCurrentDay(-1)
+    );
     $("#allDayCheckBox").change(toggleTimes);
 }
 
@@ -24,7 +28,8 @@ function changeWeek(number) {
 function addNewEvent() {
     if (mode != MODE.VIEW) return;
     mode = MODE.CREATE;
-    const dayIndex = display == DISPLAY.DAY ? currentDayIndex : 0;
+    const dayIndex =
+        display == DISPLAY.SINGLE_DAY ? currentDayIndex : 0;
     const event = {
         start: "12:00",
         end: "13:00",
@@ -79,14 +84,14 @@ function toggleDisplay() {
         .toggleClass("fa-calendar-week");
     $("#calendar").toggleClass("singleDay");
     if (display == DISPLAY.WEEK) {
-        switchToDayDisplay();
+        switchToSingleDayDisplay();
     } else {
         switchToWeekDisplay();
     }
 }
 
-function switchToDayDisplay() {
-    display = DISPLAY.DAY;
+function switchToSingleDayDisplay() {
+    display = DISPLAY.SINGLE_DAY;
     $("#calendar").addClass("singleDay");
     $("#displayButton")
         .removeClass("fa-calendar-week")
@@ -109,7 +114,7 @@ function switchToWeekDisplay() {
     $(".day, .columnHeader").removeClass("current");
 }
 
-function changeDay(direction) {
+function changeCurrentDay(direction) {
     if (display == DISPLAY.WEEK) return;
     $(".day, .columnHeader").removeClass("current");
     currentDayIndex += direction;

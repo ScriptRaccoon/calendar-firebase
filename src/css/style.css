@@ -182,11 +182,11 @@ main {
     left: 0px;
 }
 
-.columnHeader.currentDay {
+.columnHeader.today {
     background: var(--grid-color);
 }
 
-.columnHeader.currentDay .date {
+.columnHeader.today .date {
     color: var(--font-color);
 }
 

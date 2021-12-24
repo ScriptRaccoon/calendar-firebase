@@ -16,7 +16,7 @@ const MODE = {
 };
 
 const DISPLAY = {
-    DAY: 1,
+    SINGLE_DAY: 1,
     WEEK: 2,
 };
 
@@ -155,22 +155,22 @@ function showWeek() {
         );
     }
     if (weekOffset == 0) {
-        showCurrentDay();
+        highlightToday(true);
     } else {
-        hideCurrentDay();
+        highlightToday(false);
     }
 }
 
-function showCurrentDay() {
-    const now = new Date();
-    const dayIndex = getDayIndex(now);
-    $(`.columnHeader[data-dayIndex=${dayIndex}]`).addClass(
-        "currentDay"
-    );
-}
-
-function hideCurrentDay() {
-    $(".columnHeader").removeClass("currentDay");
+function highlightToday(highlight) {
+    if (highlight) {
+        const now = new Date();
+        const dayIndex = getDayIndex(now);
+        $(`.columnHeader[data-dayIndex=${dayIndex}]`).addClass(
+            "today"
+        );
+    } else {
+        $(".columnHeader").removeClass("today");
+    }
 }
 
 function listenForUpdates() {
