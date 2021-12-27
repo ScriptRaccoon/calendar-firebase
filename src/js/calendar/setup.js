@@ -85,7 +85,6 @@ function setupDays() {
     $(".day").each(function () {
         const day = $(this);
         const dayIndex = parseInt(day.attr("data-dayIndex"));
-        $("<div></div>").addClass("allDaySection").appendTo(day);
         for (let hour = 0; hour < 24; hour++) {
             $("<div></div>")
                 .attr("data-hour", hour)
