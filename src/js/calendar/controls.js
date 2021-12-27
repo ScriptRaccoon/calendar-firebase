@@ -80,9 +80,6 @@ function logout() {
 }
 
 function toggleDisplay() {
-    $("#displayButton")
-        .toggleClass("fa-calendar-day")
-        .toggleClass("fa-calendar-week");
     $("#calendar").toggleClass("singleDay");
     if (display == DISPLAY.WEEK) {
         switchToSingleDayDisplay();
@@ -94,7 +91,7 @@ function toggleDisplay() {
 function switchToSingleDayDisplay() {
     display = DISPLAY.SINGLE_DAY;
     $("#calendar").addClass("singleDay");
-    $("#displayButton")
+    $("#displayButton > i")
         .removeClass("fa-calendar-week")
         .addClass("fa-calendar-day");
     $("#displayButton").attr("title", "Change to week view");
@@ -107,7 +104,7 @@ function switchToSingleDayDisplay() {
 function switchToWeekDisplay() {
     display = DISPLAY.WEEK;
     $("#calendar").removeClass("singleDay");
-    $("#displayButton")
+    $("#displayButton > i")
         .removeClass("fa-calendar-day")
         .addClass("fa-calendar-week");
 
