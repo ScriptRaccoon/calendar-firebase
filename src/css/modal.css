@@ -17,6 +17,8 @@
     padding: 20px;
     max-width: min(450px, 90%);
     flex-grow: 1;
+    max-height: 95vh;
+    overflow-y: auto;
 }
 
 #errors {

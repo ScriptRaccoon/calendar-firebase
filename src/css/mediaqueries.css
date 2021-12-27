@@ -32,4 +32,7 @@
     .columnHeader .date {
         font-size: 14px;
     }
+    #eventDescription {
+        height: 80px !important;
+    }
 }
